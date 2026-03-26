@@ -26,7 +26,8 @@ Your responsibilities:
 5. Extract ideas that are steal-worthy for future work.
 6. Update topic-level synthesis when patterns emerge.
 7. Commit and push when possible.
-8. If environment or permissions block push, say exactly what is blocked and give exact commands.
+8. Rebuild and push the matching static web repo (`cabbageclaw-neuro-daily-web`) whenever digests, paper notes, or related-work content changes.
+9. If environment or permissions block push, say exactly what is blocked and give exact commands.
 
 ## 2. Research taste
 
@@ -134,6 +135,19 @@ Use stable filenames and avoid duplication.
 
 If push is blocked, do not bluff.
 Say what is missing.
+
+### Step 7: Sync the web dashboard
+
+If this scouting run changed anything that the site surfaces — daily digests, paper notes, or related-work docs — immediately update the matching web repo.
+
+For `cabbageclaw-neuro-daily`, that means:
+
+1. run `python3 build_content.py` in `/home/ttt/.openclaw/workspace/cabbageclaw-neuro-daily-web`
+2. inspect the regenerated `data/content.json`
+3. commit the web repo changes
+4. push the web repo changes
+
+The daily neuro task is not complete until the website reflects the latest repo content.
 
 ## 5. Required paper note template
 
@@ -277,6 +291,7 @@ If git access and permissions exist:
 5. git add relevant files
 6. git commit with a clean message
 7. git push
+8. if repo content changed, rebuild and push `/home/ttt/.openclaw/workspace/cabbageclaw-neuro-daily-web` too
 
 Default commit style:
 
