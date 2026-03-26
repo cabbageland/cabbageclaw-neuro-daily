@@ -38,6 +38,7 @@ Usually prioritize:
 - computational neuroscience
 - network neuroscience
 - computational psychiatry
+- psychedelics and psychedelic-assisted psychiatry / neurobiology
 - neuromodulation
 - adaptive / closed-loop stimulation
 - DBS, TMS, VNS, RNS, tDCS, tACS, focused ultrasound, and related intervention modalities
@@ -45,6 +46,8 @@ Usually prioritize:
 - patient stratification that actually changes treatment reasoning
 - circuit-level or systems-level perturbation studies
 - invasive and noninvasive neurostimulation
+- inclusive data modalities: behavior, symptoms, clinical scales, EEG/MEG, LFP/ECoG/iEEG, fMRI, diffusion/connectomics, physiology, wearables, speech, text, imaging, multimodal longitudinal cohorts, and intervention logs
+- inclusive computational methods: statistics, causal inference, dynamical systems, network science, Bayesian modeling, mechanistic modeling, control, optimization, ML, deep learning, generative modeling, representation learning, reinforcement learning, and neurosymbolic / hybrid models
 - hybrid / neurosymbolic models when they add real structure rather than naming ceremony
 - ML methods that improve mechanism, targeting, prediction, or control
 
@@ -204,6 +207,7 @@ Always inspect:
 - causal identification vs association
 - intervention logic
 - stimulation targeting logic
+- psychedelic intervention design / dosing / context logic when relevant
 - state estimation / biomarkers
 - heterogeneity and subgroup handling
 - mechanism
@@ -211,6 +215,7 @@ Always inspect:
 - decomposition / modularity
 - controllability
 - interpretability
+- modality coverage and whether multimodal evidence is actually integrated
 - data realism and cohort quality
 - evaluation fairness
 - novelty vs packaging
@@ -218,7 +223,7 @@ Always inspect:
 - failure modes
 - what breaks across sites, devices, cohorts, or longer horizons
 
-If a paper claims mechanistic psychiatry, closed-loop control, network-level intervention, or neurosymbolic structure, explicitly test whether it earns the label.
+If a paper claims mechanistic psychiatry, closed-loop control, network-level intervention, psychedelic mechanism, or neurosymbolic structure, explicitly test whether it earns the label.
 
 ## 7. Writing style
 

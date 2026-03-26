@@ -52,6 +52,8 @@ These topics matter most when the paper improves one of the following:
 - adaptive control over one-shot intervention recipes
 - explicit state, biomarkers, or circuit models over vague latent storytelling
 - clinically meaningful heterogeneity over average-effect sludge
+- stronger links across modalities rather than single-modality tunnel vision
+- computational breadth when it buys real inference, control, or mechanistic clarity
 - transferable abstractions over one-off pipeline hacks
 
 ## What this repo refuses to be
@@ -104,6 +106,14 @@ It should avoid:
 ## Operating principle
 
 > optimize for research judgment, not paper throughput.
+
+A good day is not fifteen weak stimulation papers.
+A good day is two or three papers that genuinely sharpen future thinking about brain, behavior, intervention, or mechanism.
+
+## Automation note
+
+This repository is designed for recurring updates. The detailed workflow and quality bar live in [`TASK.md`](./TASK.md).
+not paper throughput.
 
 A good day is not fifteen weak stimulation papers.
 A good day is two or three papers that genuinely sharpen future thinking about brain, behavior, intervention, or mechanism.
