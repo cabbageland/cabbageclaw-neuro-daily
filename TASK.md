@@ -58,7 +58,8 @@ Especially valuable are papers that:
 - connect computational models to clinically or biologically meaningful mechanism
 - handle heterogeneity instead of hiding it in averages
 - make stimulation/control loops more explicit and testable
-- expose representations, biomarkers, or circuits that could transfer across settings
+- make psychedelic mechanisms, response prediction, or treatment stratification more legible rather than more mystical
+- expose representations, biomarkers, circuits, or cross-modal links that could transfer across settings
 - sharpen novelty framing, related-work positioning, or baseline choice for future work
 
 Lower priority:

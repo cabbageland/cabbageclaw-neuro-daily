@@ -35,6 +35,7 @@ This repository prioritizes papers around:
 - computational neuroscience
 - network neuroscience
 - psychiatry and computational psychiatry
+- psychedelics and psychedelic-assisted psychiatry / neurobiology
 - neuromodulation
 - brain stimulation
 - invasive stimulation (DBS, VNS, RNS, cortical stimulation)
@@ -42,7 +43,8 @@ This repository prioritizes papers around:
 - neuroengineering and closed-loop stimulation systems
 - biomarkers for response prediction, state estimation, and adaptive control
 - circuit mechanisms and causal perturbation studies
-- neurosymbolic or hybrid models for brain / cognition / clinical decision support
+- inclusive data modalities: behavior, symptoms, clinical scales, EEG/MEG, LFP/ECoG/iEEG, fMRI, diffusion/connectomics, physiology, wearables, speech, text, imaging, multimodal longitudinal cohorts, and intervention logs
+- inclusive computational methods: statistical modeling, causal inference, dynamical systems, network models, Bayesian modeling, mechanistic modeling, control, optimization, ML, deep learning, generative modeling, representation learning, reinforcement learning, and neurosymbolic or hybrid models
 - ML methods that genuinely improve mechanistic understanding, patient stratification, or intervention design
 
 These topics matter most when the paper improves one of the following:
@@ -106,14 +108,6 @@ It should avoid:
 ## Operating principle
 
 > optimize for research judgment, not paper throughput.
-
-A good day is not fifteen weak stimulation papers.
-A good day is two or three papers that genuinely sharpen future thinking about brain, behavior, intervention, or mechanism.
-
-## Automation note
-
-This repository is designed for recurring updates. The detailed workflow and quality bar live in [`TASK.md`](./TASK.md).
-not paper throughput.
 
 A good day is not fifteen weak stimulation papers.
 A good day is two or three papers that genuinely sharpen future thinking about brain, behavior, intervention, or mechanism.
