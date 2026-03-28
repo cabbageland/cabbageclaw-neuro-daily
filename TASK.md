@@ -136,6 +136,26 @@ Use stable filenames and avoid duplication.
 If push is blocked, do not bluff.
 Say what is missing.
 
+### Step 6.5: If audio is generated, write for listening rather than reading
+
+When generating audio transcripts or narration scripts for digests or paper notes, the script must be treated as a spoken artifact, not a markdown artifact read aloud.
+
+Requirements:
+
+- write in clean spoken prose, not outline fragments
+- do not include markdown syntax that a TTS model might literally read
+- do not include bullets, asterisks, heading markers, or decorative formatting in the spoken text
+- preserve the real logic of the note: what matters, why it matters, how it works, what the caveats are
+- optimize for dense clarity, not hype or filler
+- prefer explicit transitions like "first," "second," "the reason this matters is," and "the main caveat is"
+- sound like something Tracy would actually enjoy listening to: sharp, coherent, informative, unsentimental
+- if the source note is visually structured, rewrite it into a narrative flow instead of flattening it into robotic enumeration
+- default audio pacing should be slightly slower than normal, around 0.85 speed when supported by the TTS system
+- if the voice choice is configurable, prefer a voice with clear diction and a more natural listening texture than flat assistant-default speech
+
+The bar:
+A good audio transcript should feel like a compact private briefing, not like markdown being exorcised through a speaker.
+
 ### Step 7: Sync the web dashboard
 
 If this scouting run changed anything that the site surfaces — daily digests, paper notes, or related-work docs — immediately update the matching web repo.

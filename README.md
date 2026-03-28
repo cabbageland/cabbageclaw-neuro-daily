@@ -115,3 +115,5 @@ A good day is two or three papers that genuinely sharpen future thinking about b
 ## Automation note
 
 This repository is designed for recurring updates. The detailed workflow and quality bar live in [`TASK.md`](./TASK.md).
+
+If audio transcripts are generated for digests or notes, they must be written as spoken briefings rather than markdown read aloud: clean spoken prose, strong information flow, no literal markdown artifacts, and slightly slowed delivery by default when the TTS system supports it.
