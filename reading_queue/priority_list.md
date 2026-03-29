@@ -16,23 +16,27 @@
 
 ## Tier 2 — worth revisiting for targeting and platform logic
 
-4. Circuit response to neuromodulation characterized with simultaneous deep brain stimulation and precision neuroimaging in humans
+4. Optimal Deep Brain Stimulation Locations for Gilles de la Tourette Syndrome
+   - Why: Strong cross-target DBS mapping paper; useful for thinking about fiber-informed target convergence instead of target tribalism.
+   - Status: abstract-level inspection from accessible medRxiv page text.
+
+5. Circuit response to neuromodulation characterized with simultaneous deep brain stimulation and precision neuroimaging in humans
    - Why: Best recent individual-level circuit-mapping paper for DBS; strong template for frequency-specific and longitudinal mechanism work.
    - Status: accessible Nature full-text inspection.
 
-5. A modular, high-bandwidth, bidirectional implantable device for neural interrogation
+6. A modular, high-bandwidth, bidirectional implantable device for neural interrogation
    - Why: Useful hardware stack for ecological closed-loop neuromodulation; more infrastructure than therapy, but the infrastructure is real.
    - Status: bioRxiv full-text inspection.
 
-6. Precision Network Modeling of Transcranial Magnetic Stimulation Across Individuals Suggests Therapeutic Targets and Potential for Improvement
+7. Precision Network Modeling of Transcranial Magnetic Stimulation Across Individuals Suggests Therapeutic Targets and Potential for Improvement
    - Why: Good ammunition against vague precision-TMS claims; useful individualized targeting workflow.
    - Status: abstract/figure-text inspection from PubMed/PMC-accessible article text.
 
-7. Closing the loop between brain and electrical stimulation: A proof-of-concept randomized trial of real-time fMRI-guided tACS optimization
+8. Closing the loop between brain and electrical stimulation: A proof-of-concept randomized trial of real-time fMRI-guided tACS optimization
    - Why: Concrete individualized noninvasive optimization; still underpowered.
    - Status: full-text skim.
 
-8. Personalizing neuromodulation for chronic pain: A connectivity-guided randomized trial
+9. Personalizing neuromodulation for chronic pain: A connectivity-guided randomized trial
    - Why: Worth keeping as a negative personalization trial; global connectivity targeting failed, but local M1 connectivity may still matter.
    - Status: abstract-level inspection.
 
