@@ -560,6 +560,20 @@ This pass should improve rhythm, clarity, and speakability without adding or rem
 
 That last pass is the difference between “TTS-compatible” and “actually pleasant to hear.”
 
+## Rule 27. Run a validation pass before rendering audio
+
+After writing an audio script, validate it against the active project rules before generating audio.
+
+At minimum, check:
+- the opening line is present and correct
+- the closing line is present and correct
+- the script uses the intended structure for its type, digest versus paper note
+- titles are not awkwardly duplicated
+- obvious markdown artifacts, raw links, and citation noise are gone
+- the script did not accidentally drop required sections or content
+
+If any of those checks fail, revise the script before rendering audio.
+
 ---
 
 # Recommended Output Templates
