@@ -626,6 +626,47 @@ For each item:
 ### Closing
 - fixed closing line if the piece is formatted as a Neuro Daily segment
 
+## Template B-Extended: Paper-Note Audio Script
+
+Use this template by default when the source is a full structured paper note rather than a short roundup digest.
+
+### Opening
+- fixed Neuro Daily opening line
+- explicit spoken introduction of the paper title
+- one-sentence why-selected line
+- quick verdict
+
+### Overview block
+- one-paragraph overview
+- model definition if present
+- inputs
+- outputs
+- training objective if present
+- architecture or parameterization if present
+
+### Question-by-question body
+Preserve the note’s question structure when it exists. For example:
+- what problem is the paper trying to solve?
+- what is the method?
+- what is the method motivation?
+- what data does it use?
+- how is it evaluated?
+- what are the main results?
+- what is actually novel?
+- what are the strengths?
+- what are the weaknesses, limitations, or red flags?
+- what challenges or open problems remain?
+- what future work naturally follows?
+- why does this matter for Cabbageland?
+- what ideas are steal-worthy?
+- final decision
+
+### Ending
+- inspection notes and uncertainty
+- fixed closing line
+
+Use this extended template unless the user explicitly asks for a shorter spoken summary.
+
 ---
 
 ## Template C: General Document or Memo
@@ -661,6 +702,8 @@ No need for a separate category recap.
 
 ## Heuristic 3. Fold “most relevant paper” into the first ranked entry unless that paper needs deeper expansion
 Keep a separate deep-dive only if it adds substantial new detail.
+
+Important scope note: this heuristic is mainly for digest-style roundups. Do not apply it aggressively to full paper-note conversions when the source note has intentional sectioning or question-by-question analysis.
 
 ## Heuristic 4. Keep uncertainty as a separate ending section
 This is useful in audio because it cleanly signals epistemic limits.
@@ -751,6 +794,15 @@ Before finalizing a TTS conversion, check:
 - Can a listener follow the hierarchy without seeing the page?
 - Would the script still make sense if heard only once?
 
+Additional check for digest scripts:
+- Did you preserve the ranked items, the main pattern, and the inspection-level caveats even if you merged sections?
+
+Additional check for paper-note scripts:
+- Did you preserve the source note’s question-by-question structure when present?
+- Did you keep the model-definition block if it contained substantive content?
+- Did you avoid deleting content merely to shorten the script?
+- Did you deduplicate only truly repeated material rather than distinct sections that happened to overlap in theme?
+
 If the answer to any of these is no, revise.
 
 ---
@@ -778,7 +830,16 @@ Unless the user says otherwise, apply these defaults:
 - end with synthesis plus uncertainty
 - use the fixed Neuro Daily closing
 
-For paper notes specifically, preserve the note’s substantive structure unless the user asks for a shorter briefing. If the note is organized around explicit questions, keep that question-by-question structure in the audio script. Do not delete content just to make the script shorter. Only deduplicate material when the same point is truly repeated.
+Digest default:
+- daily digest audio scripts may be compressed into a more natural spoken briefing so long as ranking, evidence level, caveats, and main conclusions are preserved
+- overview, takeaway, category labels, and repeated framing can be merged when they are substantively duplicative
+
+Paper-note default:
+- preserve the note’s substantive structure unless the user asks for a shorter briefing
+- if the note is organized around explicit questions, keep that question-by-question structure in the audio script
+- do not delete content just to make the script shorter
+- only deduplicate material when the same point is truly repeated
+- preserve overview, model-definition, and question-level sections unless they are genuinely empty or redundant with immediately adjacent text
 
 ---
 
