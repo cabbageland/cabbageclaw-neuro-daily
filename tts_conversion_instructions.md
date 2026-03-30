@@ -50,7 +50,7 @@ Use spoken date style rather than purely visual date style.
 
 Every Neuro Daily script must end with:
 
-**Your reporter, Cabbage Claw. Salute!**
+**Your reporter, cabbage claw.**
 
 Do not paraphrase this closing unless the user explicitly asks for a different sign-off.
 
@@ -462,7 +462,7 @@ A TTS script should usually end with:
 - or the key action point
 
 followed by the fixed closing line:
-**Your reporter, Cabbage Claw. Salute!**
+**Your reporter, cabbage claw.**
 
 Do not end with:
 - a dangling bullet
@@ -590,7 +590,7 @@ For each item:
 - what was and was not verified
 
 ### Closing
-- fixed closing line: “Your reporter, Cabbage Claw. Salute!”
+- fixed closing line: “Your reporter, cabbage claw.”
 
 ---
 
@@ -782,7 +782,7 @@ Good TTS prose sounds like someone who already understood the material and is no
 Before finalizing a TTS conversion, check:
 
 - Does the script start with “Welcome to the [MONTH DATE] Neuro Daily at Cabbageland!”?
-- Does the script end with “Your reporter, Cabbage Claw. Salute!”?
+- Does the script end with “Your reporter, cabbage claw.”?
 - Does the script sound like speech rather than a document?
 - Are raw links and citation artifacts gone?
 - Are long titles introduced clearly?
@@ -811,7 +811,7 @@ If the answer to any of these is no, revise.
 
 Use this when you want a compact prompt for future conversions:
 
-Convert the input into a TTS-friendly spoken script. Always begin with “Welcome to the [MONTH DATE] Neuro Daily at Cabbageland!” and always end with “Your reporter, Cabbage Claw. Salute!” Preserve the meaning, evidence, ranking, and uncertainty, but rewrite the structure for listening rather than reading. Remove raw links, citations, markdown artifacts, file paths, and other visual-only clutter. Expand abbreviations on first mention when helpful. Introduce titles explicitly in spoken form. Reduce redundancy aggressively by merging overview, takeaway, category labels, and repeated summaries when they contain the same information. Use clear spoken transitions and short-to-medium sentences. Prefer speech-natural phrasing over technically literal but clunky compounds. Do a final voice pass to smooth rhythm, reduce stacked modifiers, and improve oral flow. The final script should sound natural when read aloud and should be easy to follow in one pass.
+Convert the input into a TTS-friendly spoken script. Always begin with “Welcome to the [MONTH DATE] Neuro Daily at Cabbageland!” and always end with “Your reporter, cabbage claw.” Preserve the meaning, evidence, ranking, and uncertainty, but rewrite the structure for listening rather than reading. Remove raw links, citations, markdown artifacts, file paths, and other visual-only clutter. Expand abbreviations on first mention when helpful. Introduce titles explicitly in spoken form. Reduce redundancy aggressively by merging overview, takeaway, category labels, and repeated summaries when they contain the same information. Use clear spoken transitions and short-to-medium sentences. Prefer speech-natural phrasing over technically literal but clunky compounds. Do a final voice pass to smooth rhythm, reduce stacked modifiers, and improve oral flow. The final script should sound natural when read aloud and should be easy to follow in one pass.
 
 ---
 

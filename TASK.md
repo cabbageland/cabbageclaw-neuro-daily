@@ -159,9 +159,12 @@ A good audio transcript should feel like a compact private briefing, not like ma
 Default policy for future Neuro Daily audio scripts:
 - follow `tts_conversion_instructions.md` as the project style guide
 - use the fixed standard opening and closing unless Tracy explicitly asks otherwise
+- lock the default Piper voice to `en_US-hfc_male-medium`
+- lock the default speech rate to `0.95`
 - preserve meaning, evidence, ranking, and uncertainty while compressing redundancy
 - for paper-note audio scripts, keep the note’s question-by-question structure unless Tracy explicitly asks for a shorter summary format
 - do not delete substantive content just to shorten the script; only deduplicate genuinely repeated material
+- route all published audio generation through the standardized pipeline rather than one-off ad hoc renders
 - do a final voice pass for oral flow before generating audio
 
 ### Step 7: Sync the web dashboard

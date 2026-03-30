@@ -16,8 +16,8 @@ LEGACY_VOICE_DIR = WEB_ROOT / 'audio' / 'voices'
 GENERATED_DIR = WEB_ROOT / 'audio' / 'generated'
 SCRIPT_DIR = ROOT / 'audio_scripts'
 CONTENT_JSON = WEB_ROOT / 'data' / 'content.json'
-VOICE_NAME = 'en_US-ryan-medium'
-SPEECH_RATE = 0.79
+VOICE_NAME = 'en_US-hfc_male-medium'
+SPEECH_RATE = 0.95
 SILENCE_BETWEEN_CHUNKS_SEC = 0.32
 
 
