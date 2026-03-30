@@ -156,6 +156,14 @@ Requirements:
 The bar:
 A good audio transcript should feel like a compact private briefing, not like markdown being exorcised through a speaker.
 
+Default policy for future Neuro Daily audio scripts:
+- follow `tts_conversion_instructions.md` as the project style guide
+- use the fixed standard opening and closing unless Tracy explicitly asks otherwise
+- preserve meaning, evidence, ranking, and uncertainty while compressing redundancy
+- for paper-note audio scripts, keep the note’s question-by-question structure unless Tracy explicitly asks for a shorter summary format
+- do not delete substantive content just to shorten the script; only deduplicate genuinely repeated material
+- do a final voice pass for oral flow before generating audio
+
 ### Step 7: Sync the web dashboard
 
 If this scouting run changed anything that the site surfaces — daily digests, paper notes, or related-work docs — immediately update the matching web repo.

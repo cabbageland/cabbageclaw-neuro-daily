@@ -117,3 +117,5 @@ A good day is two or three papers that genuinely sharpen future thinking about b
 This repository is designed for recurring updates. The detailed workflow and quality bar live in [`TASK.md`](./TASK.md).
 
 If audio transcripts are generated for digests or notes, they must be written as spoken briefings rather than markdown read aloud: clean spoken prose, strong information flow, no literal markdown artifacts, and slightly slowed delivery by default when the TTS system supports it.
+
+Detailed conversion rules for turning markdown into TTS-friendly spoken scripts live in [`tts_conversion_instructions.md`](./tts_conversion_instructions.md). Treat that file as the default style guide for future digest and note audio-script generation.
