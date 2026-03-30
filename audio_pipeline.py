@@ -5,6 +5,7 @@ import json
 import re
 import subprocess
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 from typing import Iterable
 
@@ -156,10 +157,46 @@ def build_jobs() -> list[AudioJob]:
     return jobs
 
 
+def ensure_daily_wrapper(job: AudioJob, script: str) -> str:
+    stripped = script.strip()
+    if not stripped:
+        return script
+    if job.source_path.startswith('daily_papers/'):
+        date_text = Path(job.source_path).stem
+        try:
+            spoken_date = datetime.strptime(date_text, '%Y-%m-%d').strftime('%B %d').replace(' 0', ' ')
+        except ValueError:
+            spoken_date = date_text
+        opening = f'Welcome to the {spoken_date} Neuro Daily at Cabbageland!'
+        if not stripped.startswith('Welcome to the '):
+            stripped = f'{opening}\n\n{stripped}'
+        if not stripped.endswith('Your reporter, cabbage claw.'):
+            stripped = f'{stripped}\n\nYour reporter, cabbage claw.'
+    return stripped + '\n'
+
+
+def validate_script(job: AudioJob, script: str) -> None:
+    source_kind = job.source_path.split('/', 1)[0]
+    if source_kind == 'daily_papers':
+        if not script.startswith('Welcome to the '):
+            raise ValueError(f'{job.script_path.name}: missing required opening line')
+        if not script.strip().endswith('Your reporter, cabbage claw.'):
+            raise ValueError(f'{job.script_path.name}: missing required closing line')
+    if 'http://' in script or 'https://' in script:
+        raise ValueError(f'{job.script_path.name}: raw URL left in script')
+    if script.count('# ') or script.count('## '):
+        raise ValueError(f'{job.script_path.name}: markdown headings left in script')
+
+
 def write_scripts(jobs: Iterable[AudioJob]) -> None:
     for job in jobs:
-        source = ROOT / Path(job.source_path)
-        script = spokenize_markdown(read_text(source))
+        if job.script_path.exists():
+            script = read_text(job.script_path)
+        else:
+            source = ROOT / Path(job.source_path)
+            script = spokenize_markdown(read_text(source))
+        script = ensure_daily_wrapper(job, script)
+        validate_script(job, script)
         job.script_path.write_text(script, encoding='utf-8')
 
 

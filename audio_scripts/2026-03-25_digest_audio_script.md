@@ -1,3 +1,5 @@
+Welcome to the March 25 Neuro Daily at Cabbageland!
+
 2026-03-25
 Theme
 Personalized neuromodulation is slowly becoming more real: invasive mapping and adaptive control papers are starting to specify where, when, and why to stimulate instead of just reporting another average effect size. The good work is still narrow and early. The weak work still loves grandiose claims.
@@ -40,3 +42,5 @@ OCD note based on the medRxiv/PMC full text skim; strong mechanistic proof-of-co
 PD aDBS note based on JAMA Neurology abstract + PMC skim; stronger operational evidence than mechanistic specificity.
 tACS-fMRI note based on bioRxiv full-text skim; promising but underpowered.
 DSR+MPC note based on bioRxiv full-text skim; computationally interesting, translationally speculative.
+
+Your reporter, cabbage claw.

@@ -16,49 +16,61 @@
 
 ## Tier 2 — worth revisiting for targeting and platform logic
 
-4. A multicenter randomized clinical trial of portable transcranial alternating current stimulation for major depressive disorder
+4. Deep brain stimulation of the thalamus for intractable epilepsy (FRANCE study): A randomized clinical trial
+   - Why: Stronger-than-usual epilepsy DBS evidence in a post-VNS-failure cohort, but the superiority claim is still statistically incomplete.
+   - Status: PubMed abstract inspection.
+
+5. A multicenter randomized clinical trial of portable transcranial alternating current stimulation for major depressive disorder
    - Why: Bigger and more operationally meaningful than most tACS depression studies; multicenter sham-controlled design makes it hard to ignore, but the mechanism story still needs scrutiny.
    - Status: PubMed abstract inspection.
 
-5. Towards connectome-guided optimization of deep brain stimulation for gait dysfunction
+6. Towards connectome-guided optimization of deep brain stimulation for gait dysfunction
    - Why: Strong symptom-specific DBS programming logic; useful template for turning programming into an explicit optimization problem.
    - Status: medRxiv abstract inspection.
 
-6. Optimal Deep Brain Stimulation Locations for Gilles de la Tourette Syndrome
+7. Optimal Deep Brain Stimulation Locations for Gilles de la Tourette Syndrome
    - Why: Strong cross-target DBS mapping paper; useful for thinking about fiber-informed target convergence instead of target tribalism.
    - Status: abstract-level inspection from accessible medRxiv page text.
 
-7. Circuit response to neuromodulation characterized with simultaneous deep brain stimulation and precision neuroimaging in humans
+8. Circuit response to neuromodulation characterized with simultaneous deep brain stimulation and precision neuroimaging in humans
    - Why: Best recent individual-level circuit-mapping paper for DBS; strong template for frequency-specific and longitudinal mechanism work.
    - Status: accessible Nature full-text inspection.
 
-8. A modular, high-bandwidth, bidirectional implantable device for neural interrogation
+9. A modular, high-bandwidth, bidirectional implantable device for neural interrogation
    - Why: Useful hardware stack for ecological closed-loop neuromodulation; more infrastructure than therapy, but the infrastructure is real.
    - Status: bioRxiv full-text inspection.
 
-9. Precision Network Modeling of Transcranial Magnetic Stimulation Across Individuals Suggests Therapeutic Targets and Potential for Improvement
+10. Precision Network Modeling of Transcranial Magnetic Stimulation Across Individuals Suggests Therapeutic Targets and Potential for Improvement
    - Why: Good ammunition against vague precision-TMS claims; useful individualized targeting workflow.
    - Status: abstract/figure-text inspection from PubMed/PMC-accessible article text.
 
-10. Closing the loop between brain and electrical stimulation: A proof-of-concept randomized trial of real-time fMRI-guided tACS optimization
+11. Closing the loop between brain and electrical stimulation: A proof-of-concept randomized trial of real-time fMRI-guided tACS optimization
    - Why: Concrete individualized noninvasive optimization; still underpowered.
    - Status: full-text skim.
 
-11. Personalizing neuromodulation for chronic pain: A connectivity-guided randomized trial
+12. Personalizing neuromodulation for chronic pain: A connectivity-guided randomized trial
    - Why: Worth keeping as a negative personalization trial; global connectivity targeting failed, but local M1 connectivity may still matter.
    - Status: abstract-level inspection.
 
 ## Tier 3 — adjacent mechanistic / computational framing
 
-9. Optimizing Biophysical Large-Scale Brain Circuit Models With Deep Neural Networks
+13. A new perspective on brain stimulation interventions: Optimal stochastic tracking control of brain network dynamics
+   - Why: Good argument for tracking healthy dynamics under noise instead of pretending brain control is a one-shot endpoint problem.
+   - Status: arXiv abstract + partial HTML full-text inspection.
+
+14. Characterising motor and cognitive contributions of cortical beta oscillations and their modulation with rTMS
+   - Why: Useful phase-and-threshold mechanism paper; better for timing logic than for therapy inference.
+   - Status: PubMed abstract inspection.
+
+15. Optimizing Biophysical Large-Scale Brain Circuit Models With Deep Neural Networks
    - Why: Potentially useful surrogate-optimization framework for subject-level biophysical fitting; needs deeper inspection beyond abstract.
    - Status: abstract-only inspection.
 
-10. Cell-Type-Specific Bidirectional Modulation of the Cortico-Thalamo-Cortical Sensory Pathway by Transcranial Focused Ultrasound (tFUS)
+16. Cell-Type-Specific Bidirectional Modulation of the Cortico-Thalamo-Cortical Sensory Pathway by Transcranial Focused Ultrasound (tFUS)
    - Why: Clean parameter-to-directionality mechanism paper for ultrasound.
    - Status: abstract-only inspection.
 
-11. A Data-Driven Closed-Loop Control Approach to Drive Neural State Transitions for Mechanistic Insight
+17. A Data-Driven Closed-Loop Control Approach to Drive Neural State Transitions for Mechanistic Insight
    - Why: Useful target-ranking / controllability framing, not deployable intervention evidence.
    - Status: full-text skim.
 
