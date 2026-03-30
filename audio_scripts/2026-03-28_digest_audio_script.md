@@ -57,3 +57,5 @@ The DBS paper was inspected through accessible Nature full-text content and rese
 The chronic-pain trial was inspected at abstract level via medRxiv. Confidence is good that the main clinical result is negative, and that the local-versus-global connectivity distinction matters, but low on implementation details beyond the accessible abstract.
 
 FLOATES was inspected through the bioRxiv full-text introduction, abstract, and methods-and-results excerpts. Confidence is good on the engineering concept and evidence level, but not on long-term safety or translational feasibility, because those data are not there yet.
+
+Your reporter, cabbageclaw. Salute!
