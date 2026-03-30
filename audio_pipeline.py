@@ -11,13 +11,12 @@ from typing import Iterable
 ROOT = Path(__file__).resolve().parent
 WEB_ROOT = ROOT.parent / 'cabbageclaw-neuro-daily-web'
 VENV_PYTHON = ROOT.parent / '.venv-piper' / 'bin' / 'python'
-VOICE_DIR = WEB_ROOT / 'audio' / 'voices'
+VOICE_CACHE_DIR = Path.home() / '.cache' / 'piper-voices'
+LEGACY_VOICE_DIR = WEB_ROOT / 'audio' / 'voices'
 GENERATED_DIR = WEB_ROOT / 'audio' / 'generated'
 SCRIPT_DIR = ROOT / 'audio_scripts'
 CONTENT_JSON = WEB_ROOT / 'data' / 'content.json'
 VOICE_NAME = 'en_US-ryan-medium'
-VOICE_MODEL = VOICE_DIR / f'{VOICE_NAME}.onnx'
-VOICE_CONFIG = VOICE_DIR / f'{VOICE_NAME}.onnx.json'
 SPEECH_RATE = 0.79
 SILENCE_BETWEEN_CHUNKS_SEC = 0.32
 
@@ -70,15 +69,33 @@ def spokenize_markdown(md: str) -> str:
     return text.strip() + '\n'
 
 
-def ensure_voice_files() -> None:
-    VOICE_DIR.mkdir(parents=True, exist_ok=True)
-    if VOICE_MODEL.exists() and VOICE_CONFIG.exists():
-        return
-    base = f'https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/ryan/medium/{VOICE_NAME}.onnx'
-    for url, out in [
-        (f'{base}?download=true', VOICE_MODEL),
-        (f'{base}.json?download=true', VOICE_CONFIG),
-    ]:
+def voice_urls(voice_name: str) -> tuple[str, str]:
+    parts = voice_name.split('-')
+    if len(parts) < 3:
+        raise ValueError(f'Unexpected Piper voice name: {voice_name}')
+    locale = parts[0]
+    speaker = parts[1]
+    quality = parts[2]
+    base = f'https://huggingface.co/rhasspy/piper-voices/resolve/main/en/{locale}/{speaker}/{quality}/{voice_name}.onnx'
+    return f'{base}?download=true', f'{base}.json?download=true'
+
+
+def resolve_voice_files(voice_name: str) -> tuple[Path, Path]:
+    VOICE_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    model = VOICE_CACHE_DIR / f'{voice_name}.onnx'
+    config = VOICE_CACHE_DIR / f'{voice_name}.onnx.json'
+    if model.exists() and config.exists():
+        return model, config
+
+    legacy_model = LEGACY_VOICE_DIR / f'{voice_name}.onnx'
+    legacy_config = LEGACY_VOICE_DIR / f'{voice_name}.onnx.json'
+    if legacy_model.exists() and legacy_config.exists():
+        model.write_bytes(legacy_model.read_bytes())
+        config.write_bytes(legacy_config.read_bytes())
+        return model, config
+
+    model_url, config_url = voice_urls(voice_name)
+    for url, out in [(model_url, model), (config_url, config)]:
         subprocess.run([
             'python', '-c',
             (
@@ -91,6 +108,7 @@ def ensure_voice_files() -> None:
             url,
             str(out)
         ], check=True)
+    return model, config
 
 
 @dataclass
@@ -147,12 +165,13 @@ def write_scripts(jobs: Iterable[AudioJob]) -> None:
 
 def synthesize(jobs: Iterable[AudioJob]) -> None:
     jobs_list = list(jobs)
+    voice_model, voice_config = resolve_voice_files(VOICE_NAME)
     script = f'''
 import wave
 from pathlib import Path
 from piper.voice import PiperVoice
 from piper.config import SynthesisConfig
-voice = PiperVoice.load(r"{VOICE_MODEL}", r"{VOICE_CONFIG}")
+voice = PiperVoice.load(r"{voice_model}", r"{voice_config}")
 config = SynthesisConfig(length_scale={1/SPEECH_RATE}, noise_scale=0.667, noise_w_scale=0.8)
 jobs = {[(str(j.script_path), str(j.audio_path)) for j in jobs_list]!r}
 for script_path, out_path in jobs:
@@ -188,7 +207,6 @@ def update_content_json(jobs: Iterable[AudioJob]) -> None:
 
 
 def main() -> None:
-    ensure_voice_files()
     jobs = build_jobs()
     write_scripts(jobs)
     synthesize(jobs)
