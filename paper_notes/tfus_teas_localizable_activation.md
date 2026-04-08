@@ -1,0 +1,107 @@
+# Transcranial focused ultrasound induces source localizable cortical activation in resting state humans when applied concurrently with transcranial electric stimulation
+
+## Basic info
+
+* Title: Transcranial focused ultrasound induces source localizable cortical activation in resting state humans when applied concurrently with transcranial electric stimulation
+* Authors: Not fully recovered from the accessible text during this pass.
+* Year: 2026.
+* Venue / source: Nature Communications.
+* Link: https://www.nature.com/articles/s41467-026-69853-8
+* Date surfaced: 2026-04-08.
+* Why selected in one sentence: It is a useful anti-hype methods paper because it suggests that focused ultrasound alone may not produce clean target-localized cortical activation in resting humans, whereas a hybrid ultrasound-plus-electric setup can.
+
+## Quick verdict
+
+* Useful
+
+This is a methods paper with real value because it is willing to report the uncomfortable result. Ultrasound alone did not convincingly produce localized cortical activation in the reported resting-state EEG setup, while combined transcranial electro-acoustic stimulation did. That makes the paper more useful than many cleaner-sounding platform papers because it clarifies what may actually be required for controlled human cortical engagement.
+
+## One-paragraph overview
+
+The study compares focused ultrasound alone, transcranial direct current stimulation controls, and combined transcranial electro-acoustic stimulation, or tEAS, in resting-state humans using simultaneous whole-scalp EEG and source localization. The authors report that only the combined tEAS conditions produced significant hemisphere-specific and source-localizable cortical responses in the targeted region of interest, whereas tFUS alone mainly produced responses consistent with symmetric auditory or deep-brain activations. They also ran broader parameter searches and still found no convincing evidence that ultrasound alone yielded target-localized suprathreshold cortical stimulation. The practical implication is that ultrasound in humans may function better as a spatially precise subthreshold modulator that needs another excitability context rather than as a standalone direct cortical activator.
+
+## Model definition
+
+The paper does not appear to present a trainable predictive model. It does include source localization and a minimally modified Hodgkin-Huxley modeling component, but not a learned classifier or controller in the accessible text.
+
+### Inputs
+Experimental stimulation conditions, EEG recordings, source-imaging pipelines, and parameter variations over pulse repetition frequency and duty cycle.
+
+### Outputs
+Evoked EEG responses, source-localized cortical activity estimates, auditory-versus-target activation comparisons, and mechanistic support from simplified biophysical modeling.
+
+### Training objective (loss)
+Not applicable for a learned model. No trainable loss was recoverable from the accessible text.
+
+### Architecture / parameterization
+Comparative human stimulation experiment with EEG source localization, Granger-causality analysis, and supporting biophysical modeling.
+
+## Key questions this summary must address
+
+### 1. What problem is the paper trying to solve?
+
+The paper tries to determine whether focused ultrasound in humans really creates location-specific cortical activation or whether many reported effects are better explained by subthreshold modulation, auditory confounds, or other indirect responses.
+
+### 2. What is the method?
+
+The authors apply excitatory and inhibitory tDCS, tFUS alone, and combined tEAS while recording EEG from resting-state humans. They then use spatiotemporal testing, source localization, Granger-causality analysis, and follow-up parameter sweeps to compare targeted cortical responses against more diffuse or confounded alternatives.
+
+### 3. What is the method motivation?
+
+The motivation is to stop handwaving around ultrasound mechanism. If tFUS is really spatially precise and neurally effective, it should produce target-linked electrophysiological signatures rather than just generic evoked responses or auditory artifacts.
+
+### 4. What data does it use?
+
+Resting-state human EEG data under multiple stimulation conditions, with participant counts varying by condition in the accessible text, including around twenty participants in key tEAS and tFUS comparisons and a smaller callback cohort for parameter-sweep follow-up.
+
+### 5. How is it evaluated?
+
+The paper evaluates hemisphere specificity, source-localized ipsilateral versus contralateral activity, waveform similarity across target and control locations, Bayes-factor analyses of similarity, and Granger-causality analyses from auditory cortex versus the intended motor target into deep-brain parcels.
+
+### 6. What are the main results?
+
+Only the combined tEAS conditions produced significant source-localizable cortical responses in the targeted region. Ultrasound alone failed to produce comparable ipsilateral source increases and instead showed patterns consistent with auditory and deep-brain activation. Follow-up parameter searches still did not produce convincing standalone ultrasound localization to the cortical target.
+
+### 7. What is actually novel?
+
+The novelty is the willingness to combine source localization, similarity testing, and control conditions to argue against the most flattering interpretation of ultrasound-only effects. It also proposes a more realistic hybrid-stimulation framing rather than defending a standalone-ultrasound myth.
+
+### 8. What are the strengths?
+
+The best part is the control logic. The paper directly tests whether ultrasound responses differ meaningfully across spatial targets and whether they really localize to the intended cortex.
+
+It also uses multiple analytic lenses instead of relying on one favorable metric.
+
+And it produces a more honest engineering story: hybrid stimulation may be the path to practical precision.
+
+### 9. What are the weaknesses, limitations, or red flags?
+
+Because the study is in resting humans, it does not settle what ultrasound might do in task-engaged or pathological states.
+
+Source localization from EEG has known limits, so it is still an indirect window.
+
+And while the negative result on ultrasound-alone localization is valuable, it may still depend on this particular parameter regime and hardware setup.
+
+### 10. What challenges or open problems remain?
+
+The main open problem is identifying which physiological contexts or hybrid pairings make ultrasound genuinely useful in humans. Another is separating subthreshold priming effects from direct activation effects in a way that is practically exploitable for therapy.
+
+### 11. What future work naturally follows?
+
+Future work should test state-dependent and task-dependent protocols, patient populations, and hybrid combinations beyond tDCS. It would also be useful to link these electrophysiological findings to behavioral or therapeutic endpoints without relaxing the confound controls.
+
+### 12. Why does this matter for cabbageland?
+
+Because it prevents sloppy thinking about ultrasound. If the modality mostly acts as a context-dependent modulator rather than a clean standalone activator, that changes how targeting, control, and device design should be framed.
+
+### 13. What ideas are steal-worthy?
+
+One steal-worthy idea is to treat hybrid stimulation as a first-class design space instead of a backup plan.
+
+Another is to use similarity testing and directional information-flow analysis as confound checks, not just post hoc decorations.
+
+A third is the broader lesson that a negative or deflationary mechanistic result can be more valuable than a flattering but ambiguous positive one.
+
+### 14. Final decision
+
+Keep as a useful methods note. Not a direct therapy paper, but a strong correction to lazy ultrasound narratives and a good clue about more realistic neuromodulation engineering directions.
