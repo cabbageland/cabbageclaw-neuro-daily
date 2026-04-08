@@ -47,8 +47,9 @@ Usually prioritize:
 - computational neuroscience
 - network neuroscience
 - computational psychiatry
+- adolescent / adolescence neuropsychiatry and developmental neuroscience when it intersects intervention, biomarkers, circuit mechanisms, or longitudinal risk
 - psychedelics and psychedelic-assisted psychiatry / neurobiology
-- neuromodulation
+- neuromodulation, including adolescent / developmental neuromodulation when clinically or mechanistically meaningful
 - adaptive / closed-loop stimulation
 - DBS, TMS, VNS, RNS, tDCS, tACS, focused ultrasound, and related intervention modalities
 - response biomarkers and state estimation
@@ -63,6 +64,7 @@ Usually prioritize:
 Especially valuable are papers that:
 
 - identify causal structure rather than glorified association
+- make adolescent or developmental intervention logic more legible instead of treating youth cohorts as an afterthought
 - improve adaptive intervention, targeting, or state tracking
 - connect computational models to clinically or biologically meaningful mechanism
 - handle heterogeneity instead of hiding it in averages

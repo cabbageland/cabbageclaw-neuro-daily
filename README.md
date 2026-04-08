@@ -35,8 +35,9 @@ This repository prioritizes papers around:
 - computational neuroscience
 - network neuroscience
 - psychiatry and computational psychiatry
+- adolescent / adolescence neuropsychiatry and development when it intersects intervention, biomarkers, circuit function, or longitudinal risk
 - psychedelics and psychedelic-assisted psychiatry / neurobiology
-- neuromodulation
+- neuromodulation, including adolescent / developmental neuromodulation when clinically or mechanistically meaningful
 - brain stimulation
 - invasive stimulation (DBS, VNS, RNS, cortical stimulation)
 - noninvasive stimulation (TMS, tDCS, tACS, ultrasound, related modalities)
