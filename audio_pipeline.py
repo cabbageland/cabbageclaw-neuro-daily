@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import subprocess
@@ -188,8 +189,12 @@ def validate_script(job: AudioJob, script: str) -> None:
         raise ValueError(f'{job.script_path.name}: markdown headings left in script')
 
 
-def write_scripts(jobs: Iterable[AudioJob]) -> None:
+def write_scripts(jobs: Iterable[AudioJob], *, overwrite_existing: bool) -> None:
     for job in jobs:
+        if job.script_path.exists() and not overwrite_existing:
+            script = read_text(job.script_path)
+            validate_script(job, script)
+            continue
         if job.script_path.exists():
             script = read_text(job.script_path)
         else:
@@ -198,6 +203,20 @@ def write_scripts(jobs: Iterable[AudioJob]) -> None:
         script = ensure_daily_wrapper(job, script)
         validate_script(job, script)
         job.script_path.write_text(script, encoding='utf-8')
+
+
+def job_needs_regeneration(job: AudioJob) -> bool:
+    source = ROOT / Path(job.source_path)
+    if not job.audio_path.exists() or not job.script_path.exists():
+        return True
+    audio_mtime = job.audio_path.stat().st_mtime
+    return source.stat().st_mtime > audio_mtime
+
+
+def select_jobs(jobs: list[AudioJob], full: bool) -> list[AudioJob]:
+    if full:
+        return jobs
+    return [job for job in jobs if job_needs_regeneration(job)]
 
 
 def synthesize(jobs: Iterable[AudioJob]) -> None:
@@ -228,10 +247,12 @@ for script_path, out_path in jobs:
     subprocess.run([str(VENV_PYTHON), '-c', script], check=True)
 
 
-def update_content_json(jobs: Iterable[AudioJob]) -> None:
+def update_content_json(all_jobs: Iterable[AudioJob]) -> None:
     data = json.loads(CONTENT_JSON.read_text(encoding='utf-8'))
     audio = {}
-    for job in jobs:
+    for job in all_jobs:
+        if not job.audio_path.exists():
+            continue
         audio[job.source_path] = {
             'label': job.label,
             'scriptPath': str(job.script_path.relative_to(ROOT)),
@@ -243,12 +264,22 @@ def update_content_json(jobs: Iterable[AudioJob]) -> None:
     CONTENT_JSON.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description='Generate Neuro Daily audio artifacts')
+    parser.add_argument('--full', action='store_true', help='Rebuild all audio instead of only changed items')
+    return parser.parse_args()
+
+
 def main() -> None:
+    args = parse_args()
     jobs = build_jobs()
-    write_scripts(jobs)
-    synthesize(jobs)
+    write_scripts(jobs, overwrite_existing=args.full)
+    selected_jobs = select_jobs(jobs, full=args.full)
+    if selected_jobs:
+        synthesize(selected_jobs)
     update_content_json(jobs)
-    print(f'generated {len(jobs)} audio items')
+    mode = 'full' if args.full else 'incremental'
+    print(f'generated {len(selected_jobs)} audio items ({mode})')
 
 
 if __name__ == '__main__':
