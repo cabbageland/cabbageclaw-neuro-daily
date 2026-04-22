@@ -62,3 +62,6 @@ If not, the paper is usually less useful than the title suggests.
 - **Precision TMS modeling paper:** useful because it attacks the hidden assumption that a nominal cortical coordinate equals a stable network target across people.
 - **Closed-loop tACS-fMRI paper:** useful because it makes the control objective explicit, even if the setup is still operationally heavy.
 - **tFUS corticothalamic mechanism paper:** adjacent but valuable because it maps parameter regime to directional circuit effect.
+- **TIS depression biomarker paper:** useful mainly because it separates deep-target rhetoric from response heterogeneity and asks whether baseline brain state predicts benefit.
+- **iTBS plus fNIRS response-prediction paper:** useful because it shifts biomarker logic closer to perturbation-evoked target engagement rather than static baseline description.
+- **Flexible ultrasound patch paper:** adjacent methods reminder that personalization and closed loop claims depend on physically credible field delivery, not just controller language.
