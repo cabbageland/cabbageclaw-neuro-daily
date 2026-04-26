@@ -3,90 +3,109 @@
 ## Basic info
 
 * Title: Transcranial temporal interference stimulation targeting the subthalamic region for motor symptoms in Parkinson's disease: a pilot, randomised, double-blind, sham-controlled crossover study
-* Authors: Chenhao Yang, Yongxin Xu, Yichao Du, Xiaonan Shen, Tingting Li, Nan Chen, Yulian Zhu, Lingyan Huang, Jiaojiao Lü, Lu Li, Zhenyu Qian, Zhen Wang, Ulf Ziemann, Nir Grossman, Alvaro Pascual-Leone, Brad Manor, Chencheng Zhang, Junhong Zhou, Yu Liu
-* Year: 2026
-* Venue / source: EBioMedicine
+* Authors: Chenhao Yang et al.
+* Year: 2026.
+* Venue / source: EBioMedicine.
 * Link: https://pubmed.ncbi.nlm.nih.gov/41932202/
-* Date surfaced: 2026-04-19
-* Why selected in one sentence: It is a comparatively serious early human test of individualized temporal-interference stimulation aimed at the subthalamic region in Parkinson's disease.
+* Date surfaced: 2026-04-26.
+* Why selected in one sentence: It is one of the few temporal-interference papers that tests individualized deep-target stimulation in a blinded human clinical design with interpretable motor outcomes.
 
 ## Quick verdict
 
-* Useful
+* Highly relevant
 
-This is one of the more interesting recent temporal-interference papers because it is randomized, sham-controlled, and clinically anchored. But it is still a small acute crossover pilot with all the usual noninvasive deep-target specificity problems. Worth preserving as an early signal, not as proof that temporal interference has arrived.
+This is worth keeping because it forces temporal interference stimulation to answer a real clinical question instead of just a modeling question. The signal is better than most papers in this lane: sham-controlled, blinded, individualized targeting, and medication-off motor assessment. The main limitation is that it is still a small single-session pilot, so it does not settle the hard questions about anatomical specificity, durability, and whether the benefit is truly deep-target specific.
 
 ## One-paragraph overview
 
-The trial enrolled thirty people with early-to-mid-stage Parkinson's disease and used individualized structural-MRI-based montages to deliver a single twenty-minute session of one-hundred-thirty-hertz temporal-interference stimulation aimed at the subthalamic region, compared with active sham in a randomized double-blind crossover design. Participants were tested in the medication-off state with repeated MDS-UPDRS-III measurements immediately, thirty minutes, and sixty minutes after stimulation. The paper reports higher responder rate and larger short-term motor-score improvement after temporal interference than after sham, with similar perceived stimulation and no serious adverse events. The attractive part is the sham-controlled human design. The unresolved part is whether the field truly achieved selective subthalamic modulation rather than a broader distributed effect.
+The paper evaluates whether a single session of transcranial temporal interference stimulation, individualized with structural MRI to target the subthalamic region, can improve motor symptoms in Parkinson's disease. Thirty participants with early-to-mid-stage idiopathic Parkinson's disease completed a randomized, double-blind, within-participant crossover comparison between active stimulation and active sham in the medication-off state. Active stimulation was associated with a higher responder rate and larger short-term reductions in MDS-UPDRS-III scores than sham, with the cleanest effects in bradykinesia and tremor rather than rigidity or axial signs. The result is clinically interesting because it shows that temporal-interference claims can survive at least one blinded human test. It is still not definitive proof of selective noninvasive subthalamic control.
 
 ## Model definition
 
-The study uses individualized electric-field targeting rather than a trainable predictive model.
+This is primarily a clinical intervention paper rather than a learned-model paper.
 
 ### Inputs
-Participant-specific structural MRI, electrode montage parameters, and clinical motor assessments in the medication-off state.
+Individual structural MRI for montage individualization, two electrode pairs delivering 2000 hertz and 2130 hertz carrier frequencies, twenty minutes of stimulation in the medication-off state, and participant-level clinical baseline motor severity.
 
 ### Outputs
-Individualized temporal-interference stimulation targeting plans and post-stimulation motor outcomes, primarily MDS-UPDRS-III total and subscore changes.
+Primary outputs are responder status, defined as at least a five-point reduction in MDS-UPDRS-III, plus changes in total MDS-UPDRS-III score and subscores for bradykinesia, tremor, rigidity, and axial signs at immediate, thirty-minute, and sixty-minute follow-up.
 
 ### Training objective (loss)
-No explicit learnable model or optimization loss is described in the accessible text. The individualized targeting appears based on structural-MRI-guided field modeling rather than supervised training.
+Not applicable. No trainable predictive or control model is described in the accessible abstract.
 
 ### Architecture / parameterization
-Individualized temporal-interference electric-field targeting with fixed high-frequency carrier currents generating a one-hundred-thirty-hertz envelope.
+Randomized, double-blind, sham-controlled, two-by-two within-participant crossover clinical design with individualized stimulation montage based on structural MRI.
 
 ## Key questions this summary must address
 
 ### 1. What problem is the paper trying to solve?
-It asks whether a noninvasive method can modulate a deep Parkinson-relevant target region, the subthalamic area, and produce measurable motor benefit without implant surgery.
+
+The paper is trying to determine whether temporal interference stimulation can produce clinically meaningful, noninvasive improvement in Parkinson motor symptoms when aimed at the subthalamic region.
 
 ### 2. What is the method?
-A randomized, double-blind, sham-controlled within-participant crossover study using one session of individualized temporal-interference stimulation versus sham.
+
+Participants received a twenty-minute session of active temporal interference stimulation or active sham in randomized order, with the montage individualized from structural MRI. Motor symptoms were measured before stimulation and up to one hour afterward in the medication-off state.
 
 ### 3. What is the method motivation?
-Subthalamic DBS helps Parkinson motor symptoms, but surgery is invasive. Temporal interference is pitched as a way to steer low-frequency modulation to deeper structures with less cortical burden.
+
+The motivation is obvious and important. Deep brain stimulation of subthalamic targets helps Parkinson symptoms, but it is invasive. Temporal interference promises deeper noninvasive engagement than standard transcranial electrical stimulation, so the question is whether that promise cashes out in a real clinical setting.
 
 ### 4. What data does it use?
-Thirty people with idiopathic Parkinson's disease, Hoehn and Yahr stages 1.5 to 3, assessed off medication.
+
+Thirty people with early-to-mid-stage idiopathic Parkinson's disease, Hoehn and Yahr stages 1.5 to 3, enrolled in Shanghai. The accessible abstract does not give richer subgrouping, imaging-outcome, or physiology-outcome detail.
 
 ### 5. How is it evaluated?
-Feasibility, safety, blinding, responder rate defined as at least five-point MDS-UPDRS-III reduction, and change in total and subscale motor scores immediately, thirty minutes, and sixty minutes after stimulation.
+
+The study compares active stimulation with sham on responder rate and change in MDS-UPDRS-III total score across immediate, thirty-minute, and sixty-minute post-stimulation assessments. Safety, tolerability, and blinding were also evaluated.
 
 ### 6. What are the main results?
-No serious adverse events occurred, perceived stimulation was similar across active and sham conditions, responder rate was much higher after temporal interference than sham, and total MDS-UPDRS-III improvement favored active stimulation at all post-stimulation time points. Bradykinesia and tremor improved more consistently than rigidity or axial signs.
+
+No serious adverse events occurred, and perceived stimulation was similar under active and sham conditions. The responder rate was seventy percent with active stimulation versus fifteen percent with sham. Active stimulation also produced significantly larger reductions in total MDS-UPDRS-III scores at all post-stimulation time points, with the clearest benefits in bradykinesia and tremor.
 
 ### 7. What is actually novel?
-A clinically anchored, individualized, sham-controlled human test of temporal-interference stimulation directed at the subthalamic region in Parkinson's disease.
+
+The novelty is not temporal interference by itself. The novelty is running an individualized, blinded, sham-controlled human crossover study with clinically legible outcomes rather than relying on electric-field simulations or indirect biomarkers alone.
 
 ### 8. What are the strengths?
-- Better clinical design than many early temporal-interference papers.
-- Individualized MRI-based targeting rather than a generic montage.
-- Includes active sham and blinding assessment.
-- Uses a clinically interpretable motor endpoint.
-- Reports risk-benefit details rather than only positive outcomes.
+
+The design is much more serious than typical early temporal-interference work.
+
+It uses individualized targeting rather than a one-size-fits-all montage.
+
+The outcome measures are clinically interpretable.
+
+And the sham comparison plus similar subjective sensation makes the short-term signal harder to dismiss as pure expectancy theater.
 
 ### 9. What are the weaknesses, limitations, or red flags?
-- Small sample and single-session design.
-- Only short-term effects were measured.
-- Anatomical specificity remains uncertain; field models do not prove selective STN engagement.
-- Strong early effect sizes in a pilot study are exactly where regression to the mean later happens.
-- Industry and intellectual-property interests around temporal interference should keep skepticism switched on, even though they do not invalidate the data.
+
+It is still a small pilot with only short-term follow-up after a single session.
+
+The study does not settle whether the benefit depends on genuinely deep subthalamic engagement rather than broader network stimulation.
+
+Rigidity and axial signs were not consistently improved.
+
+And accessible abstract-level information is not enough to judge carryover handling, individual field-model quality, or robustness across phenotype subgroups.
 
 ### 10. What challenges or open problems remain?
-Repeated-dose efficacy, durability, precise dose-response logic, anatomical specificity, and whether benefits survive larger multisite replication.
+
+Durability is the big one. It remains unclear whether repeated sessions retain benefit, whether the effect scales, and whether there are meaningful cumulative adverse effects or diminishing returns. Anatomical specificity also remains unresolved.
 
 ### 11. What future work naturally follows?
-Longer dosing studies, stronger mechanistic validation with physiology or imaging, comparisons against conventional noninvasive stimulation, and trials testing whether patient-specific anatomy really changes outcome.
+
+Larger repeated-session trials with stronger anatomical validation, physiology readouts, and direct comparisons against more ordinary electrical stimulation controls. It would also be useful to test whether imaging-based field estimates predict who responds.
 
 ### 12. Why does this matter for cabbageland?
-Because temporal interference keeps getting marketed as noninvasive DBS. This paper is worth watching precisely because it is one of the cleaner early human studies, which makes it useful for separating genuine signal from hype.
+
+Because cabbageland cares about noninvasive deep-target claims that survive contact with actual human outcomes. This is a paper to cite when asking whether temporal interference has moved beyond elegant targeting rhetoric.
 
 ### 13. What ideas are steal-worthy?
-- If you claim deep-target noninvasive stimulation, sham quality and anatomical modeling both matter.
-- Early pilots should be judged on design discipline as much as on effect size.
-- Subscore patterns can hint at whether a target story is plausible or overly broad.
-- Track responder-rate framing, but do not let it substitute for durability or mechanism.
+
+One idea is that individualized anatomy should be the default for any serious deep-target noninvasive stimulation study.
+
+Another is that early proof-of-concept work should use clinically legible responder thresholds rather than only surrogate measures.
+
+A third is that modality-hype papers should be forced into sham-controlled outcome designs as early as possible.
 
 ### 14. Final decision
-Keep as a cautious translational reference. Promising enough to watch, nowhere near definitive enough to trust.
+
+Keep. Promising, better designed than most of the literature around it, but still too preliminary to treat as settled evidence for precise noninvasive subthalamic control.
