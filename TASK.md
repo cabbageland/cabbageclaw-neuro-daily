@@ -51,12 +51,13 @@ Usually prioritize:
 - psychedelics and psychedelic-assisted psychiatry / neurobiology
 - neuromodulation, including adolescent / developmental neuromodulation when clinically or mechanistically meaningful
 - adaptive / closed-loop stimulation
-- DBS, TMS, VNS, RNS, tDCS, tACS, focused ultrasound, and related intervention modalities
+- DBS, TMS, VNS, RNS, tDCS, tACS, focused ultrasound, epidural stimulation, and related intervention modalities
 - response biomarkers and state estimation
 - patient stratification that actually changes treatment reasoning
 - circuit-level or systems-level perturbation studies
 - invasive and noninvasive neurostimulation
-- inclusive data modalities: behavior, symptoms, clinical scales, EEG/MEG, LFP/ECoG/iEEG, fMRI, diffusion/connectomics, physiology, wearables, speech, text, imaging, multimodal longitudinal cohorts, and intervention logs
+- stereo-EEG and intracranial electrophysiology, including sEEG, iEEG, ECoG, and LFP-guided intervention logic
+- inclusive data modalities: behavior, symptoms, clinical scales, EEG/MEG, LFP/ECoG/iEEG/sEEG, fMRI, diffusion/connectomics, physiology, wearables, speech, text, imaging, multimodal longitudinal cohorts, and intervention logs
 - inclusive computational methods: statistics, causal inference, dynamical systems, network science, Bayesian modeling, mechanistic modeling, control, optimization, ML, deep learning, generative modeling, representation learning, reinforcement learning, and neurosymbolic / hybrid models
 - hybrid / neurosymbolic models when they add real structure rather than naming ceremony
 - ML methods that improve mechanism, targeting, prediction, or control
@@ -123,6 +124,53 @@ Use recent sources such as:
 ### Step 2: Filter
 
 Keep only papers that survive scrutiny.
+
+### Step 2.5: Full-text access is the default, not a bonus
+
+For every paper you seriously consider preserving, you must aggressively try to get the full text before allowing yourself to rely on an abstract.
+
+This is a hard rule.
+
+Minimum requirement before falling back to abstract-only inspection:
+
+- make at least 10 distinct full-text acquisition attempts
+- these attempts should span different access paths when possible, not the same failed click repeated 10 times
+- log the access path categories in your own working notes if the paper ends up preserved despite partial access
+
+Valid attempt categories include:
+
+1. publisher landing page
+2. direct PDF URL guess or article asset URL
+3. DOI landing page
+4. PubMed full-text links
+5. PubMed Central / Europe PMC
+6. arXiv / bioRxiv / medRxiv / OpenReview version search
+7. author manuscript search
+8. lab or project page search
+9. Google Scholar or Brave title search for PDF / HTML full text
+10. Crossref or Unpaywall-style open-access lookup through available tools/surfaces
+11. institutional-access browser session if available
+12. references / supplementary / mirrored accessible versions when they expose main article text
+
+If a paper is behind a paywall, do not shrug and summarize the abstract unless you have actually exhausted the search.
+
+Abstract-only inspection is allowed only when:
+
+- you made 10 real attempts to get full text, and
+- full text still was not accessible in this environment
+
+If you fall back to abstract-only inspection:
+
+- say so explicitly
+- say that 10 full-text attempts were made first
+- describe the confidence limits that follow from that failure
+- lower your preservation confidence accordingly
+
+Strong preference rules:
+
+- if two candidate papers are similarly interesting, prefer the one with accessible full text
+- do not write a canonical preserved note from a flimsy abstract read if a better full-text paper is available that day
+- when a note is based on full text, say so plainly
 
 ### Step 3: Produce a short digest first
 
@@ -351,6 +399,12 @@ Do not claim a push happened if it did not.
 Do not invent papers, results, quotes, or novelty.
 Distinguish facts from interpretation.
 If only partial access exists, say so.
+
+Do not imply a paper was deeply inspected if it was not.
+"Inspected" should mean full text unless clearly qualified.
+If the read was abstract-only, say "abstract-only inspection" explicitly.
+If the read was partial full text, say which parts were actually inspected.
+Never silently collapse a failed full-text search into a normal-sounding summary.
 
 ## 11. Default operating principle
 
