@@ -120,8 +120,15 @@ def read_note_metadata(slug: str) -> tuple[str | None, str | None]:
     return title, doi
 
 
+def normalize_web_markdown_url(url: str) -> str:
+    if re.match(r"^https://cabbageland\.github\.io/cabbageclaw-neuro-daily-web/(daily_papers|paper_notes|related_notes)/[^?#/]+$", url):
+        return url + ".md"
+    return url
+
+
 def slug_from_note_url(url: str) -> str:
-    return url.rstrip("/").split("/")[-1]
+    slug = url.rstrip("/").split("/")[-1]
+    return re.sub(r"\.md$", "", slug)
 
 
 def build_items(digest: dict) -> list[dict]:
@@ -131,6 +138,7 @@ def build_items(digest: dict) -> list[dict]:
         note_url = digest["note_links"].get(title)
         if not note_url:
             raise ValueError(f"Missing note link for ranked paper: {title}")
+        note_url = normalize_web_markdown_url(note_url)
         slug = slug_from_note_url(note_url)
         note_title, paper_url = read_note_metadata(slug)
         if not paper_url:
@@ -272,7 +280,7 @@ def render_plain(digest: dict, items: list[dict]) -> str:
     lines = [
         "Hello!",
         "",
-        f"Welcome to the {human_date(digest['date'])} Neuro Daily at Cabbageland: {DIGEST_WEB_BASE}/{digest['date']}",
+        f"Welcome to the {human_date(digest['date'])} Neuro Daily at Cabbageland: {DIGEST_WEB_BASE}/{digest['date']}.md",
         "",
         "Today's strongest papers are the ones that make neuromodulation less fuzzy and more operational.",
         "",
@@ -299,7 +307,7 @@ def render_html(digest: dict, items: list[dict]) -> str:
     parts = [
         "<html><body>",
         "<p>Hello!</p>",
-        f"<p>Welcome to the <a href=\"{DIGEST_WEB_BASE}/{digest['date']}\">{html.escape(human_date(digest['date']))} Neuro Daily</a> at Cabbageland.</p>",
+        f"<p>Welcome to the <a href=\"{DIGEST_WEB_BASE}/{digest['date']}.md\">{html.escape(human_date(digest['date']))} Neuro Daily</a> at Cabbageland.</p>",
         "<p>Today's strongest papers are the ones that make neuromodulation less fuzzy and more operational.</p>",
     ]
     for item in items:
