@@ -39,12 +39,13 @@ This repository prioritizes papers around:
 - psychedelics and psychedelic-assisted psychiatry / neurobiology
 - neuromodulation, including adolescent / developmental neuromodulation when clinically or mechanistically meaningful
 - brain stimulation
-- invasive stimulation (DBS, VNS, RNS, cortical stimulation)
+- invasive stimulation (DBS, VNS, RNS, cortical stimulation, epidural stimulation)
 - noninvasive stimulation (TMS, tDCS, tACS, ultrasound, related modalities)
 - neuroengineering and closed-loop stimulation systems
 - biomarkers for response prediction, state estimation, and adaptive control
 - circuit mechanisms and causal perturbation studies
-- inclusive data modalities: behavior, symptoms, clinical scales, EEG/MEG, LFP/ECoG/iEEG, fMRI, diffusion/connectomics, physiology, wearables, speech, text, imaging, multimodal longitudinal cohorts, and intervention logs
+- stereo-EEG and intracranial electrophysiology, including sEEG, iEEG, ECoG, and LFP-guided intervention logic
+- inclusive data modalities: behavior, symptoms, clinical scales, EEG/MEG, LFP/ECoG/iEEG/sEEG, fMRI, diffusion/connectomics, physiology, wearables, speech, text, imaging, multimodal longitudinal cohorts, and intervention logs
 - inclusive computational methods: statistical modeling, causal inference, dynamical systems, network models, Bayesian modeling, mechanistic modeling, control, optimization, ML, deep learning, generative modeling, representation learning, reinforcement learning, and neurosymbolic or hybrid models
 - ML methods that genuinely improve mechanistic understanding, patient stratification, or intervention design
 
@@ -120,3 +121,26 @@ This repository is designed for recurring updates. The detailed workflow and qua
 If audio transcripts are generated for digests or notes, they must be written as spoken briefings rather than markdown read aloud: clean spoken prose, strong information flow, no literal markdown artifacts, and slightly slowed delivery by default when the TTS system supports it.
 
 Detailed conversion rules for turning markdown into TTS-friendly spoken scripts live in [`tts_conversion_instructions.md`](./tts_conversion_instructions.md). Treat that file as the default style guide for future digest and note audio-script generation.
+
+## Daily email workflow
+
+The repo includes `neuro_daily_email.py`, which renders and sends the same-day Neuro Daily digest email using Python SMTP instead of Himalaya's send path.
+
+Behavior:
+
+- subject format: `Neuro Daily, [DATE], Reporter: cabbageclaw`
+- reads recipients from `recipients.csv` (one email per line)
+- keeps `recipients.csv` out of git via `.gitignore`
+- derives paper links and note links from the current digest and note files
+- sends multipart email with both plain-text and HTML versions
+- expects SMTP settings and password command in `~/.config/himalaya/config.toml`
+
+Examples:
+
+```bash
+python3 neuro_daily_email.py --date 2026-05-18 --dry-run
+python3 neuro_daily_email.py --date 2026-05-18 --preview-path neuro_daily_email_preview.eml
+python3 neuro_daily_email.py
+```
+
+The intended cron schedule is 7:30 AM local time, sending that day's digest after a quick render sanity check using the generated preview.
