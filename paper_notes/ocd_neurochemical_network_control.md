@@ -3,7 +3,7 @@
 ## Basic info
 
 * Title: Neurochemically informed network control theory reveals energetic dysregulation of altered brain state dynamics in obsessive-compulsive disorder
-* Authors: Not fully verified from accessible text in this environment
+* Authors: Dongling Yuan, Haiyan Liao, Yi Zhang, Zhiyan Wang, Yan Han, Douyu Zhang, Qianmei Yu, Jie Fan, and Xiongzhao Zhu
 * Year: 2026
 * Venue / source: Psychiatry and Clinical Neurosciences
 * Link: https://doi.org/10.1111/pcn.70069

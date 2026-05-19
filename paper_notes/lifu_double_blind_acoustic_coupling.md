@@ -3,7 +3,7 @@
 ## Basic info
 
 * Title: Acoustic Coupling for Double-Blind Human Low-Intensity Focused Ultrasound Neuromodulation
-* Authors: Not fully verified from accessible text in this environment
+* Authors: Aditya Kapoor, Andrew Strohman, Yunruo Ni, Gabriel Isaac, Jason Raymond, and Wynn Legon
 * Year: 2026
 * Venue / source: Ultrasound in Medicine and Biology
 * Link: https://doi.org/10.1016/j.ultrasmedbio.2026.04.012

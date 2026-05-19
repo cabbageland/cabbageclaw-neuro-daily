@@ -3,7 +3,7 @@
 ## Basic info
 
 * Title: Exploratory decoding of TMS-EEG: Predicting TEP response to intermittent and continuous theta burst stimulation
-* Authors: Not fully verified from accessible text in this environment
+* Authors: Sofie Carrette, Arnaud Falisse, Marie E. Vandriessche, and Vincent Vandenbulcke
 * Year: 2026
 * Venue / source: NeuroImage
 * Link: https://doi.org/10.1016/j.neuroimage.2026.121957

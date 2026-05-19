@@ -3,7 +3,7 @@
 ## Basic info
 
 * Title: Subthalamic nucleus deep brain stimulation connectivity related to apathy outcomes in Parkinson's disease
-* Authors: Not fully verified from accessible text in this environment
+* Authors: Philippe Voruz, Jordan E. Pierce, Kévin Ahrweiller, Claire Haegelen, Vincent Oehen, Irina O. Jelescu, Frédéric Assal, and Andrea O. Rosso
 * Year: 2026
 * Venue / source: Journal of Parkinson's Disease
 * Link: https://doi.org/10.1177/1877718X261450356
