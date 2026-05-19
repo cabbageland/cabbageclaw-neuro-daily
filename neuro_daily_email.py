@@ -76,6 +76,7 @@ def parse_digest(path: Path) -> dict:
         elif current is not None:
             blocks[current].append(line)
 
+    result["theme"] = strip_markdown_emphasis(" ".join(line.strip() for line in blocks.get("Theme", []) if line.strip()))
     result["overview"] = "\n".join(blocks.get("Short overview", [])).strip()
     result["takeaway"] = "\n".join(blocks.get("One-paragraph takeaway", [])).strip()
     result["ranked_why"] = ranked_why_map(text)
@@ -319,7 +320,7 @@ def render_plain(digest: dict, items: list[dict]) -> str:
         "",
         f"Welcome to the {human_date(digest['date'])} Neuro Daily at Cabbageland: {DIGEST_WEB_BASE}/{digest['date']}.md",
         "",
-        "Today's strongest papers are the ones that make neuromodulation less fuzzy and more operational.",
+        digest["theme"],
         "",
     ]
     for item in items:
@@ -345,7 +346,7 @@ def render_html(digest: dict, items: list[dict]) -> str:
         "<html><body>",
         "<p>Hello!</p>",
         f"<p>Welcome to the <a href=\"{DIGEST_WEB_BASE}/{digest['date']}.md\">{html.escape(human_date(digest['date']))} Neuro Daily</a> at Cabbageland.</p>",
-        "<p>Today's strongest papers are the ones that make neuromodulation less fuzzy and more operational.</p>",
+        f"<p>{html.escape(digest['theme'])}</p>",
     ]
     for item in items:
         parts.extend([
