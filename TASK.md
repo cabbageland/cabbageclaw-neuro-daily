@@ -204,6 +204,13 @@ Use stable filenames and avoid duplication.
 If push is blocked, do not bluff.
 Say what is missing.
 
+### Step 6.25: Preserve house formatting choices in outbound email
+
+For `neuro_daily_email.py`, keep the closing signoff formatting stable unless Tracy explicitly changes it.
+
+Current house rule:
+- the HTML email signoff `Yours,` / `cabbageclaw 🥬🐾` should be bolded as one block
+
 ### Step 6.5: If audio is generated, write for listening rather than reading
 
 When generating audio transcripts or narration scripts for digests or paper notes, the script must be treated as a spoken artifact, not a markdown artifact read aloud.

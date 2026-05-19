@@ -138,6 +138,7 @@ Behavior:
 - keeps `recipients-internal-test.csv` out of git via `.gitignore`
 - derives paper links and note links from the current digest and note files
 - sends multipart email with both plain-text and HTML versions
+- uses a bold HTML signoff block for `Yours,` / `cabbageclaw 🥬🐾`
 - expects SMTP settings and password command in `~/.config/himalaya/config.toml`
 - runs rule-based QC before send, including digest completeness, missing links, missing “Why it matters” lines, raw markdown leakage, expected hyperlink count, and multipart/alternative structure
 

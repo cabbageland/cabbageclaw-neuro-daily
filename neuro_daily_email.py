@@ -351,7 +351,7 @@ def render_html(digest: dict, items: list[dict]) -> str:
         ])
     parts.extend([
         f"<p><strong>Bottom line:</strong> {html.escape(digest['takeaway'])}</p>",
-        "<p>Yours,<br>cabbageclaw 🥬🐾</p>",
+        "<p><strong>Yours,<br>cabbageclaw 🥬🐾</strong></p>",
         "</body></html>",
     ])
     return "".join(parts)
