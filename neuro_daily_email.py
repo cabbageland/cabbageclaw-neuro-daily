@@ -6,6 +6,7 @@ import re
 import smtplib
 import ssl
 import subprocess
+import urllib.request
 from datetime import date, datetime
 from email.message import EmailMessage
 from pathlib import Path
@@ -16,8 +17,9 @@ NOTES_DIR = ROOT / "paper_notes"
 RECIPIENTS_CSV = ROOT / "recipients.csv"
 INTERNAL_TEST_RECIPIENTS_CSV = ROOT / "recipients-internal-test.csv"
 CONFIG_PATH = Path.home() / ".config" / "himalaya" / "config.toml"
-DIGEST_WEB_BASE = "https://cabbageland.github.io/cabbageclaw-neuro-daily-web/daily_papers"
-NOTES_WEB_BASE = "https://cabbageland.github.io/cabbageclaw-neuro-daily-web/paper_notes"
+SITE_BASE = "https://cabbageland.github.io/cabbageclaw-neuro-daily-web"
+DIGEST_WEB_BASE = f"{SITE_BASE}/daily_papers"
+NOTES_WEB_BASE = f"{SITE_BASE}/paper_notes"
 
 SECTION_HEADERS = {
     "Theme",
@@ -124,6 +126,14 @@ def normalize_web_markdown_url(url: str) -> str:
     if re.match(r"^https://cabbageland\.github\.io/cabbageclaw-neuro-daily-web/(daily_papers|paper_notes|related_notes)/[^?#/]+$", url):
         return url + ".md"
     return url
+
+
+def public_app_route(url: str) -> str:
+    normalized = normalize_web_markdown_url(url)
+    prefix = f"{SITE_BASE}/"
+    if normalized.startswith(prefix):
+        return f"{SITE_BASE}/#/{normalized[len(prefix):]}"
+    return normalized
 
 
 def slug_from_note_url(url: str) -> str:
@@ -264,6 +274,28 @@ def validate_rendered_message(msg: EmailMessage, recipients: list[str], internal
         raise ValueError("Rendered email QC failed: " + "; ".join(errors))
 
 
+def verify_web_links_before_send(digest: dict, items: list[dict]):
+    urls = [public_app_route(f"{DIGEST_WEB_BASE}/{digest['date']}")]
+    urls.extend(public_app_route(item["notes_url"]) for item in items)
+    errors = []
+    for url in urls:
+        try:
+            with urllib.request.urlopen(url, timeout=15) as response:
+                status = getattr(response, "status", 200)
+                final_url = getattr(response, "url", url)
+                body = response.read(2048).decode("utf-8", errors="ignore")
+                if status >= 400:
+                    errors.append(f"{url} returned HTTP {status}")
+                elif final_url.rstrip("/") != url.rstrip("/"):
+                    errors.append(f"{url} redirected unexpectedly to {final_url}")
+                elif "Failed to load dashboard" in body:
+                    errors.append(f"{url} loaded dashboard error page")
+        except Exception as exc:
+            errors.append(f"{url} failed: {exc}")
+    if errors:
+        raise ValueError("Pre-send link verification failed: " + "; ".join(errors))
+
+
 def smtp_settings() -> tuple[str, int, str, str]:
     text = read_text(CONFIG_PATH)
     host = re.search(r'message\.send\.backend\.host = "([^"]+)"', text)
@@ -361,6 +393,7 @@ def main():
     recipients = read_recipients(args.to, internal_test=args.internal_test)
     msg = build_message(digest, items, recipients)
     validate_rendered_message(msg, recipients, internal_test=args.internal_test)
+    verify_web_links_before_send(digest, items)
     if args.preview_path:
         Path(args.preview_path).write_text(msg.as_string(), encoding="utf-8")
     if args.dry_run or args.preview_path:
