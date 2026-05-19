@@ -130,17 +130,21 @@ Behavior:
 
 - subject format: `Neuro Daily, [DATE], Reporter: cabbageclaw`
 - reads recipients from `recipients.csv` (one email per line)
+- supports `--internal-test` mode, which sends only to `recipients-internal-test.csv`
 - keeps `recipients.csv` out of git via `.gitignore`
+- keeps `recipients-internal-test.csv` out of git via `.gitignore`
 - derives paper links and note links from the current digest and note files
 - sends multipart email with both plain-text and HTML versions
 - expects SMTP settings and password command in `~/.config/himalaya/config.toml`
+- runs rule-based QC before send, including digest completeness, missing links, missing “Why it matters” lines, raw markdown leakage, expected hyperlink count, and multipart/alternative structure
 
 Examples:
 
 ```bash
 python3 neuro_daily_email.py --date 2026-05-18 --dry-run
 python3 neuro_daily_email.py --date 2026-05-18 --preview-path neuro_daily_email_preview.eml
+python3 neuro_daily_email.py --date 2026-05-18 --internal-test
 python3 neuro_daily_email.py
 ```
 
-The intended cron schedule is 7:30 AM local time, sending that day's digest after a quick render sanity check using the generated preview.
+The intended cron schedule is 7:30 AM local time, sending that day's digest after a render sanity check using the generated preview. For debugging or maintenance, prefer `--internal-test` so only internal recipients receive the message.

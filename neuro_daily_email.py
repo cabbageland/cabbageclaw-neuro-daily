@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parent
 DIGEST_DIR = ROOT / "daily_papers"
 NOTES_DIR = ROOT / "paper_notes"
 RECIPIENTS_CSV = ROOT / "recipients.csv"
+INTERNAL_TEST_RECIPIENTS_CSV = ROOT / "recipients-internal-test.csv"
 CONFIG_PATH = Path.home() / ".config" / "himalaya" / "config.toml"
 DIGEST_WEB_BASE = "https://cabbageland.github.io/cabbageclaw-neuro-daily-web/daily_papers"
 NOTES_WEB_BASE = "https://cabbageland.github.io/cabbageclaw-neuro-daily-web/paper_notes"
@@ -36,6 +37,7 @@ def parse_args():
     p.add_argument("--to", action="append", default=[], help="Optional extra recipient. Repeatable.")
     p.add_argument("--dry-run", action="store_true", help="Render output but do not send.")
     p.add_argument("--preview-path", help="Write rendered HTML preview to this path.")
+    p.add_argument("--internal-test", action="store_true", help="Send only to recipients-internal-test.csv for debugging or maintenance.")
     return p.parse_args()
 
 
@@ -184,10 +186,11 @@ def strip_markdown_emphasis(text: str) -> str:
     return text.replace("**", "").strip()
 
 
-def read_recipients(extra: list[str]) -> list[str]:
+def read_recipients(extra: list[str], internal_test: bool = False) -> list[str]:
     recipients = []
-    if RECIPIENTS_CSV.exists():
-        with RECIPIENTS_CSV.open(newline="", encoding="utf-8") as f:
+    recipients_path = INTERNAL_TEST_RECIPIENTS_CSV if internal_test else RECIPIENTS_CSV
+    if recipients_path.exists():
+        with recipients_path.open(newline="", encoding="utf-8") as f:
             for row in csv.reader(f):
                 if not row:
                     continue
@@ -204,6 +207,53 @@ def read_recipients(extra: list[str]) -> list[str]:
     if not deduped:
         raise ValueError("No recipients found. Populate recipients.csv or pass --to.")
     return deduped
+
+
+def validate_digest_structure(digest: dict, items: list[dict]):
+    errors = []
+    if len(items) != 4:
+        errors.append(f"Expected 4 ranked papers, found {len(items)}")
+    if not digest["takeaway"]:
+        errors.append("Missing one-paragraph takeaway")
+    if not digest["overview"]:
+        errors.append("Missing short overview")
+    for idx, item in enumerate(items, start=1):
+        if not item["paper_url"].startswith("http"):
+            errors.append(f"Item {idx} missing valid paper URL")
+        if not item["notes_url"].startswith("http"):
+            errors.append(f"Item {idx} missing valid notes URL")
+        if not item["why"]:
+            errors.append(f"Item {idx} missing Why it matters")
+        if len(item["body"]) < 120:
+            errors.append(f"Item {idx} body looks too short")
+    if errors:
+        raise ValueError("Email QC failed: " + "; ".join(errors))
+
+
+def validate_rendered_message(msg: EmailMessage, recipients: list[str], internal_test: bool = False):
+    errors = []
+    plain_part = msg.get_body(preferencelist=("plain",))
+    html_part = msg.get_body(preferencelist=("html",))
+    plain = plain_part.get_content() if plain_part else ""
+    html_body = html_part.get_content() if html_part else ""
+
+    if not recipients:
+        errors.append("Recipient list is empty")
+    if "**" in plain or "**" in html_body:
+        errors.append("Raw markdown emphasis leaked into rendered email")
+    for token in ["Paper:", "Notes:", "Bottom line:"]:
+        if token not in plain:
+            errors.append(f"Missing plain-text token: {token}")
+    if "<a href=" not in html_body:
+        errors.append("HTML body has no hyperlinks")
+    if html_body.count("<a href=") < 8:
+        errors.append("HTML body has fewer hyperlinks than expected")
+    if "Content-Type: multipart/alternative" not in msg.as_string().split("\n\n", 1)[0]:
+        errors.append("Message is not multipart/alternative")
+    if internal_test and recipients != read_recipients([], internal_test=True):
+        errors.append("Internal test mode recipients differ from recipients-internal-test.csv")
+    if errors:
+        raise ValueError("Rendered email QC failed: " + "; ".join(errors))
 
 
 def smtp_settings() -> tuple[str, int, str, str]:
@@ -299,8 +349,10 @@ def main():
         raise SystemExit(f"Digest not found: {digest_path}")
     digest = parse_digest(digest_path)
     items = build_items(digest)
-    recipients = read_recipients(args.to)
+    validate_digest_structure(digest, items)
+    recipients = read_recipients(args.to, internal_test=args.internal_test)
     msg = build_message(digest, items, recipients)
+    validate_rendered_message(msg, recipients, internal_test=args.internal_test)
     if args.preview_path:
         Path(args.preview_path).write_text(msg.as_string(), encoding="utf-8")
     if args.dry_run or args.preview_path:
