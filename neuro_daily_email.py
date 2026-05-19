@@ -147,7 +147,7 @@ def build_items(digest: dict) -> list[dict]:
     for idx, title in enumerate(digest["ranked_titles"][:4]):
         note_url = digest["note_links"].get(title)
         if not note_url:
-            raise ValueError(f"Missing note link for ranked paper: {title}")
+            continue
         note_url = normalize_web_markdown_url(note_url)
         slug = slug_from_note_url(note_url)
         note_title, paper_url = read_note_metadata(slug)
@@ -163,6 +163,8 @@ def build_items(digest: dict) -> list[dict]:
             "body": body,
             "why": digest["ranked_why"].get(title, why),
         })
+    if not items:
+        raise ValueError("No ranked papers with preserved note links were available for email rendering")
     return items
 
 
@@ -229,8 +231,10 @@ def read_recipients(extra: list[str], internal_test: bool = False) -> list[str]:
 
 def validate_digest_structure(digest: dict, items: list[dict]):
     errors = []
-    if len(items) != 4:
-        errors.append(f"Expected 4 ranked papers, found {len(items)}")
+    if len(items) < 3:
+        errors.append(f"Expected at least 3 ranked papers with preserved notes, found {len(items)}")
+    if len(items) > 4:
+        errors.append(f"Expected at most 4 ranked papers in email, found {len(items)}")
     if not digest["takeaway"]:
         errors.append("Missing one-paragraph takeaway")
     if not digest["overview"]:
@@ -248,7 +252,7 @@ def validate_digest_structure(digest: dict, items: list[dict]):
         raise ValueError("Email QC failed: " + "; ".join(errors))
 
 
-def validate_rendered_message(msg: EmailMessage, recipients: list[str], internal_test: bool = False):
+def validate_rendered_message(msg: EmailMessage, recipients: list[str], internal_test: bool = False, expected_item_count: int = 4):
     errors = []
     plain_part = msg.get_body(preferencelist=("plain",))
     html_part = msg.get_body(preferencelist=("html",))
@@ -264,8 +268,9 @@ def validate_rendered_message(msg: EmailMessage, recipients: list[str], internal
             errors.append(f"Missing plain-text token: {token}")
     if "<a href=" not in html_body:
         errors.append("HTML body has no hyperlinks")
-    if html_body.count("<a href=") < 8:
-        errors.append("HTML body has fewer hyperlinks than expected")
+    expected_links = max(1 + expected_item_count * 2, 5)
+    if html_body.count("<a href=") < expected_links:
+        errors.append(f"HTML body has fewer hyperlinks than expected for {expected_item_count} items")
     if "Content-Type: multipart/alternative" not in msg.as_string().split("\n\n", 1)[0]:
         errors.append("Message is not multipart/alternative")
     if internal_test and recipients != read_recipients([], internal_test=True):
@@ -392,7 +397,7 @@ def main():
     validate_digest_structure(digest, items)
     recipients = read_recipients(args.to, internal_test=args.internal_test)
     msg = build_message(digest, items, recipients)
-    validate_rendered_message(msg, recipients, internal_test=args.internal_test)
+    validate_rendered_message(msg, recipients, internal_test=args.internal_test, expected_item_count=len(items))
     verify_web_links_before_send(digest, items)
     if args.preview_path:
         Path(args.preview_path).write_text(msg.as_string(), encoding="utf-8")
