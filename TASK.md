@@ -48,6 +48,8 @@ Usually prioritize:
 - network neuroscience
 - computational psychiatry
 - adolescent / adolescence neuropsychiatry and developmental neuroscience when it intersects intervention, biomarkers, circuit mechanisms, or longitudinal risk
+- hypnosis and hypnotherapy when they connect to mechanism, state change, biomarkers, suggestibility, dissociation, learning, or intervention design
+- combinations of cognitive behavioral therapy with interventional psychiatry, including neuromodulation, psychedelic-assisted treatment, accelerated interventions, or other hybrid care stacks where the combination logic is testable rather than decorative
 - psychedelics and psychedelic-assisted psychiatry / neurobiology
 - neuromodulation, including adolescent / developmental neuromodulation when clinically or mechanistically meaningful
 - adaptive / closed-loop stimulation
@@ -71,6 +73,8 @@ Especially valuable are papers that:
 - handle heterogeneity instead of hiding it in averages
 - make stimulation/control loops more explicit and testable
 - make psychedelic mechanisms, response prediction, or treatment stratification more legible rather than more mystical
+- make hypnosis or hypnotherapy legible as a state-change or intervention-design problem instead of a vibes-only clinical niche
+- test whether psychotherapy plus interventional psychiatry combinations have real mechanistic complementarity, sequencing logic, or subgroup-specific value
 - expose representations, biomarkers, circuits, or cross-modal links that could transfer across settings
 - sharpen novelty framing, related-work positioning, or baseline choice for future work
 
@@ -111,6 +115,12 @@ Always ask:
 ### Step 1: Search
 
 Use Brave Search first for discovery and initial filtering when scouting papers for this repo. Treat it as the default search surface unless a better source is explicitly required.
+
+During daily scout, explicitly keep an eye out for the following topics of interest in addition to the broader standing priorities:
+
+- hypnosis
+- hypnotherapy
+- combinations of cognitive behavioral therapy with interventional psychiatry
 
 Use recent sources such as:
 

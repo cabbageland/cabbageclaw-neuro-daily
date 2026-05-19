@@ -36,6 +36,8 @@ This repository prioritizes papers around:
 - network neuroscience
 - psychiatry and computational psychiatry
 - adolescent / adolescence neuropsychiatry and development when it intersects intervention, biomarkers, circuit function, or longitudinal risk
+- hypnosis and hypnotherapy, especially when tied to mechanism, biomarkers, intervention design, or state change
+- combinations of cognitive behavioral therapy with interventional psychiatry, including neuromodulation, psychedelic-assisted treatment, and related hybrid care models
 - psychedelics and psychedelic-assisted psychiatry / neurobiology
 - neuromodulation, including adolescent / developmental neuromodulation when clinically or mechanistically meaningful
 - brain stimulation
@@ -58,6 +60,7 @@ These topics matter most when the paper improves one of the following:
 - clinically meaningful heterogeneity over average-effect sludge
 - stronger links across modalities rather than single-modality tunnel vision
 - computational breadth when it buys real inference, control, or mechanistic clarity
+- intervention combinations that make mechanistic or clinical sense rather than stacking therapies decoratively
 - transferable abstractions over one-off pipeline hacks
 
 ## What this repo refuses to be
