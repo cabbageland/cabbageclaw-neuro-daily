@@ -14,7 +14,7 @@
 
 * Highly relevant
 
-This is one of the cleaner recent psychiatry neuromodulation papers because it prospectively tests whether two connectome-derived targets shift different symptom dimensions. The effect is real enough to keep, but the evidence is still moderate rather than decisive: the sample is small, both arms improved depression similarly, and this is still target-level stratification rather than patient-specific individualized optimization. Still, it is better than decorative precision rhetoric.
+This is one of the cleaner recent psychiatry neuromodulation papers because it prospectively tests whether two connectome-derived targets shift different symptom dimensions. I could inspect the accessible author-manuscript full text here, which helps. The effect is real enough to keep, but the evidence is still moderate rather than decisive: the sample is small, both arms improved depression similarly, and this is still target-level stratification rather than patient-specific individualized optimization. Still, it is better than decorative precision rhetoric.
 
 ## One-paragraph overview
 
@@ -46,7 +46,7 @@ Randomize adults with depression and clinically meaningful anxiety to thirty TMS
 Retrospective connectomic work has suggested that different brain circuits may preferentially modulate different symptom clusters. If true, target choice should not be treated as one-size-fits-all even inside one diagnostic label.
 
 ### 4. What data does it use?
-The accessible abstract reports forty adults aged eighteen to sixty-five with major depressive disorder, Beck Depression Inventory score at least twenty, and Beck Anxiety Inventory score at least sixteen. Analyzable groups in the abstract are sixteen participants for the dysphoric target and twenty for the anxiosomatic target.
+The accessible author-manuscript full text describes a phase 2 double-blind parallel-group trial with forty adults aged eighteen to sixty-five who had major depressive disorder, Beck Depression Inventory score at least twenty, and Beck Anxiety Inventory score at least sixteen. The main analyzable groups reported in the manuscript are sixteen participants for the dysphoric target and twenty for the anxiosomatic target.
 
 ### 5. How is it evaluated?
 By comparing within-arm and between-arm changes in BDI and BAI, including the ratio of depression improvement to anxiety improvement and the absolute magnitude of anxiety reduction after controlling for depression change.
@@ -66,7 +66,7 @@ The novelty is not that TMS can help depression. The useful novelty is the prosp
 ### 9. What are the weaknesses, limitations, or red flags?
 - Small sample and likely limited power for finer subgroup or moderation claims.
 - Not truly personalized targeting at the patient level; it is still a two-target protocol.
-- Accessible text does not expose durability, adverse-event nuances, or target-engagement measures.
+- The accessible author manuscript is enough to trust the broad design and outcome logic, but it is still not the same as having every supplement, durability analysis, and target-engagement detail fully checked.
 - Conflict-of-interest profile around connectivity-based targeting intellectual property deserves awareness, even if it does not invalidate the result.
 
 ### 10. What challenges or open problems remain?
