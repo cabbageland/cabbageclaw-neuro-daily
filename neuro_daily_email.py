@@ -368,23 +368,24 @@ def human_date(iso_date: str) -> str:
     return d.strftime("%B %-d, %Y")
 
 
-def build_message(digest: dict, items: list[dict], recipients: list[str]) -> EmailMessage:
+def build_message(digest: dict, items: list[dict], recipient: str) -> EmailMessage:
     msg = EmailMessage()
     _, _, login, _ = smtp_settings()
     msg["Subject"] = digest["title"]
     msg["From"] = login
-    msg["To"] = ", ".join(recipients)
+    msg["To"] = recipient
     msg.set_content(render_plain(digest, items))
     msg.add_alternative(render_html(digest, items), subtype="html")
     return msg
 
 
-def send_message(msg: EmailMessage):
+def send_messages(messages: list[EmailMessage]):
     host, port, login, password = smtp_settings()
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(host, port, context=context) as s:
         s.login(login, password)
-        s.send_message(msg)
+        for msg in messages:
+            s.send_message(msg)
 
 
 def main():
@@ -397,19 +398,21 @@ def main():
     items = build_items(digest)
     validate_digest_structure(digest, items)
     recipients = read_recipients(args.to, internal_test=args.internal_test)
-    msg = build_message(digest, items, recipients)
-    validate_rendered_message(msg, recipients, internal_test=args.internal_test, expected_item_count=len(items))
+    messages = [build_message(digest, items, recipient) for recipient in recipients]
+    for msg in messages:
+        validate_rendered_message(msg, [msg["To"]], internal_test=args.internal_test, expected_item_count=len(items))
     verify_web_links_before_send(digest, items)
     if args.preview_path:
-        Path(args.preview_path).write_text(msg.as_string(), encoding="utf-8")
+        preview = "\n\n".join(msg.as_string() for msg in messages)
+        Path(args.preview_path).write_text(preview, encoding="utf-8")
     if args.dry_run or args.preview_path:
         if args.dry_run:
-            print(msg.as_string())
+            print("\n\n".join(msg.as_string() for msg in messages))
         else:
             print(f"PREVIEW_WRITTEN {args.preview_path}")
         return
-    send_message(msg)
-    print(f"SENT {digest['date']} to {len(recipients)} recipient(s)")
+    send_messages(messages)
+    print(f"SENT {digest['date']} to {len(recipients)} recipient(s) individually")
 
 
 if __name__ == "__main__":
