@@ -2,6 +2,7 @@
 import argparse
 import csv
 import html
+import json
 import re
 import smtplib
 import ssl
@@ -20,6 +21,8 @@ CONFIG_PATH = Path.home() / ".config" / "himalaya" / "config.toml"
 SITE_BASE = "https://cabbageland.github.io/cabbageclaw-neuro-daily-web"
 DIGEST_WEB_BASE = f"{SITE_BASE}/daily_papers"
 NOTES_WEB_BASE = f"{SITE_BASE}/paper_notes"
+STATE_DIR = ROOT / ".state"
+SEND_STATE_PATH = STATE_DIR / "email_send_state.json"
 
 SECTION_HEADERS = {
     "Theme",
@@ -302,6 +305,47 @@ def verify_web_links_before_send(digest: dict, items: list[dict]):
         raise ValueError("Pre-send link verification failed: " + "; ".join(errors))
 
 
+def load_send_state() -> dict:
+    if not SEND_STATE_PATH.exists():
+        return {}
+    try:
+        return json.loads(read_text(SEND_STATE_PATH))
+    except Exception:
+        return {}
+
+
+def save_send_state(state: dict):
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+    SEND_STATE_PATH.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def send_mode_key(internal_test: bool) -> str:
+    return "internal_test" if internal_test else "production"
+
+
+def assert_not_already_sent(digest_date: str, recipients: list[str], internal_test: bool = False):
+    state = load_send_state()
+    mode = send_mode_key(internal_test)
+    sent = state.get(mode, {}).get(digest_date)
+    if sent:
+        prior_recipients = sent.get("recipients", [])
+        raise ValueError(
+            f"Refusing duplicate send for {digest_date} in {mode} mode. "
+            f"Already sent at {sent.get('sent_at')} to {len(prior_recipients)} recipient(s): {', '.join(prior_recipients)}"
+        )
+
+
+def record_send(digest_date: str, recipients: list[str], internal_test: bool = False):
+    state = load_send_state()
+    mode = send_mode_key(internal_test)
+    bucket = state.setdefault(mode, {})
+    bucket[digest_date] = {
+        "sent_at": datetime.now().isoformat(timespec="seconds"),
+        "recipients": recipients,
+    }
+    save_send_state(state)
+
+
 def smtp_settings() -> tuple[str, int, str, str]:
     text = read_text(CONFIG_PATH)
     host = re.search(r'message\.send\.backend\.host = "([^"]+)"', text)
@@ -411,7 +455,9 @@ def main():
         else:
             print(f"PREVIEW_WRITTEN {args.preview_path}")
         return
+    assert_not_already_sent(digest["date"], recipients, internal_test=args.internal_test)
     send_messages(messages)
+    record_send(digest["date"], recipients, internal_test=args.internal_test)
     print(f"SENT {digest['date']} to {len(recipients)} recipient(s) individually")
 
 
