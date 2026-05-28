@@ -1,3 +1,6 @@
 recipients.csv
 recipients-internal-test.csv
 neuro_daily_email_preview.eml
+.state/
+.state/**
+.state/email_send_state.json
