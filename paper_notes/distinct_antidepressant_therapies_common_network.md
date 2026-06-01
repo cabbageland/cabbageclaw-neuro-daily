@@ -6,7 +6,7 @@
 * Authors: Hubert J. Banville et al.
 * Year: 2026
 * Venue / source: Nature Mental Health
-* Link: https://www.nature.com/articles/s44220-025-00466-9
+* Link: https://www.nature.com/articles/s41467-025-67945-5
 * Date surfaced: 2026-05-31
 * Why selected in one sentence: It is one of the more useful recent attempts to place psychedelic, stimulation, and electroconvulsive antidepressant effects inside a shared large-scale network mechanism rather than treating each modality as a sealed box.
 
