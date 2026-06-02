@@ -256,6 +256,32 @@ For `cabbageclaw-neuro-daily`, that means:
 
 The daily neuro task is not complete until the website reflects the latest repo content.
 
+### Step 8: Verify publish wiring and keep cron reruns idempotent
+
+Before doing fresh scouting in a cron run, determine today's America/Los_Angeles date and check whether `daily_papers/YYYY-MM-DD.md` already exists. If it does, repair and verify the existing publish path instead of starting another full scout. Do not rewrite the day just because the cron was retried.
+
+After changing the digest, notes, audio scripts, audio files, or web repo, run:
+
+```bash
+python3 scripts/verify_publish.py --date YYYY-MM-DD
+```
+
+After pushing and once GitHub Pages has had time to update, also run:
+
+```bash
+python3 scripts/verify_publish.py --date YYYY-MM-DD --live
+```
+
+The local verification must pass before the run can be considered complete. Live verification should pass before claiming the public site and audio are resolved; if Pages is still propagating, say that explicitly and keep the repo state clean.
+
+Cron reliability rules:
+
+- Never call `export.arxiv.org` directly from a cron run. Use Brave Search, PubMed, publisher pages, PMC, DOI pages, arXiv HTML/PDF pages, or browser-assisted routes instead.
+- If a source fetch hangs, errors, or produces huge output, abandon that source path and continue. One source failure is not a task failure.
+- Do not dump raw search HTML, publisher HTML, full PDF text, or full article text into the transcript. Save bulky material to files and inspect small slices.
+- Generate audio only for new or changed digest/note/related-work items unless explicitly doing maintenance.
+- Finish with a concise final status so the cron run reaches completion.
+
 ## 5. Required paper note template
 
 Use this exact structure for paper notes:
