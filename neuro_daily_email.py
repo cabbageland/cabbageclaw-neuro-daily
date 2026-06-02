@@ -359,19 +359,21 @@ def smtp_settings() -> tuple[str, int, str, str]:
 
 
 def render_plain(digest: dict, items: list[dict]) -> str:
+    digest_url = public_app_route(f"{DIGEST_WEB_BASE}/{digest['date']}")
     lines = [
         "Hello!",
         "",
-        f"Welcome to the {human_date(digest['date'])} Neuro Daily at Cabbageland: {DIGEST_WEB_BASE}/{digest['date']}.md",
+        f"Welcome to the {human_date(digest['date'])} Neuro Daily at Cabbageland: {digest_url}",
         "",
         digest["theme"],
         "",
     ]
     for item in items:
+        notes_url = public_app_route(item["notes_url"])
         lines.extend([
             item["title"],
             f"Paper: {item['paper_url']}",
-            f"Notes: {item['notes_url']}",
+            f"Notes: {notes_url}",
             item["body"],
             f"Why it matters: {item['why']}",
             "",
@@ -386,16 +388,18 @@ def render_plain(digest: dict, items: list[dict]) -> str:
 
 
 def render_html(digest: dict, items: list[dict]) -> str:
+    digest_url = public_app_route(f"{DIGEST_WEB_BASE}/{digest['date']}")
     parts = [
         "<html><body>",
         "<p>Hello!</p>",
-        f"<p>Welcome to the <a href=\"{DIGEST_WEB_BASE}/{digest['date']}.md\">{html.escape(human_date(digest['date']))} Neuro Daily</a> at Cabbageland.</p>",
+        f"<p>Welcome to the <a href=\"{html.escape(digest_url)}\">{html.escape(human_date(digest['date']))} Neuro Daily</a> at Cabbageland.</p>",
         f"<p>{html.escape(digest['theme'])}</p>",
     ]
     for item in items:
+        notes_url = public_app_route(item["notes_url"])
         parts.extend([
             f"<p><strong>{html.escape(item['title'])}</strong></p>",
-            f"<p><strong>Paper:</strong> <a href=\"{html.escape(item['paper_url'])}\">{html.escape(item['paper_label'])}</a><br><strong>Notes:</strong> <a href=\"{html.escape(item['notes_url'])}\">Cabbageland notes</a></p>",
+            f"<p><strong>Paper:</strong> <a href=\"{html.escape(item['paper_url'])}\">{html.escape(item['paper_label'])}</a><br><strong>Notes:</strong> <a href=\"{html.escape(notes_url)}\">Cabbageland notes</a></p>",
             f"<p>{html.escape(item['body'])}</p>",
             f"<p><strong>Why it matters:</strong> {html.escape(item['why'])}</p>",
         ])
