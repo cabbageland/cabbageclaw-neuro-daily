@@ -127,12 +127,17 @@ def read_note_metadata(slug: str) -> tuple[str | None, str | None]:
 
 
 def normalize_web_markdown_url(url: str) -> str:
-    if re.match(r"^https://cabbageland\.github\.io/cabbageclaw-neuro-daily-web/(daily_papers|paper_notes|related_notes)/[^?#/]+$", url):
+    if (
+        re.match(r"^https://cabbageland\.github\.io/cabbageclaw-neuro-daily-web/(daily_papers|paper_notes|related_notes|related_work)/[^?#/]+$", url)
+        and "." not in url.rsplit("/", 1)[-1]
+    ):
         return url + ".md"
     return url
 
 
 def public_app_route(url: str) -> str:
+    if url.startswith(f"{SITE_BASE}/#/"):
+        return url
     normalized = normalize_web_markdown_url(url)
     prefix = f"{SITE_BASE}/"
     if normalized.startswith(prefix):
