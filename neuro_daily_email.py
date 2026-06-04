@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import csv
+import hashlib
 import html
 import json
 import re
@@ -10,6 +11,7 @@ import subprocess
 import urllib.request
 from datetime import date, datetime
 from email.message import EmailMessage
+from email.utils import getaddresses
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -23,6 +25,9 @@ DIGEST_WEB_BASE = f"{SITE_BASE}/daily_papers"
 NOTES_WEB_BASE = f"{SITE_BASE}/paper_notes"
 STATE_DIR = ROOT / ".state"
 SEND_STATE_PATH = STATE_DIR / "email_send_state.json"
+EMAIL_RE = re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.IGNORECASE)
+REDACTED_EMAIL = "[redacted-email]"
+SEND_STATE_VERSION = 2
 
 SECTION_HEADERS = {
     "Theme",
@@ -215,7 +220,34 @@ def strip_markdown_emphasis(text: str) -> str:
     return text.replace("**", "").strip()
 
 
+def normalize_email(email_address: str) -> str:
+    return email_address.strip().lower()
+
+
+def redact_email_text(text: str) -> str:
+    return EMAIL_RE.sub(REDACTED_EMAIL, text)
+
+
+def recipient_fingerprint(email_address: str) -> str:
+    salted = f"neuro-daily-recipient:{normalize_email(email_address)}"
+    return hashlib.sha256(salted.encode("utf-8")).hexdigest()[:16]
+
+
+def assert_no_email_tokens(label: str, text: str):
+    if EMAIL_RE.search(text):
+        raise ValueError(f"{label} contains an unredacted email address")
+
+
+def assert_no_known_recipient_addresses(label: str, text: str, recipients: list[str]):
+    lowered = text.lower()
+    leaked = [r for r in recipients if normalize_email(r) in lowered]
+    if leaked:
+        raise ValueError(f"{label} contains {len(leaked)} recipient email address(es)")
+
+
 def read_recipients(extra: list[str], internal_test: bool = False) -> list[str]:
+    if internal_test and extra:
+        raise ValueError("Internal test mode only allows recipients-internal-test.csv recipients")
     recipients = []
     recipients_path = INTERNAL_TEST_RECIPIENTS_CSV if internal_test else RECIPIENTS_CSV
     if recipients_path.exists():
@@ -230,12 +262,45 @@ def read_recipients(extra: list[str], internal_test: bool = False) -> list[str]:
     deduped = []
     seen = set()
     for r in recipients:
-        if r not in seen:
-            seen.add(r)
+        key = normalize_email(r)
+        if key not in seen:
+            seen.add(key)
             deduped.append(r)
     if not deduped:
         raise ValueError("No recipients found. Populate recipients.csv or pass --to.")
     return deduped
+
+
+def header_addresses(msg: EmailMessage, header: str) -> list[str]:
+    return [normalize_email(addr) for _, addr in getaddresses(msg.get_all(header, [])) if addr]
+
+
+def validate_recipient_privacy(messages: list[EmailMessage], recipients: list[str]):
+    errors = []
+    expected_recipients = [normalize_email(r) for r in recipients]
+    if len(messages) != len(expected_recipients):
+        errors.append(f"Expected {len(expected_recipients)} message(s), built {len(messages)}")
+
+    for idx, msg in enumerate(messages):
+        expected = expected_recipients[idx] if idx < len(expected_recipients) else None
+        to_addrs = header_addresses(msg, "To")
+        cc_addrs = header_addresses(msg, "Cc")
+        bcc_addrs = header_addresses(msg, "Bcc")
+        if expected and to_addrs != [expected]:
+            errors.append(f"Message {idx + 1} must have exactly one To recipient")
+        if cc_addrs:
+            errors.append(f"Message {idx + 1} has Cc recipient(s)")
+        if bcc_addrs:
+            errors.append(f"Message {idx + 1} has Bcc recipient(s)")
+
+        plain_part = msg.get_body(preferencelist=("plain",))
+        html_part = msg.get_body(preferencelist=("html",))
+        plain = plain_part.get_content() if plain_part else ""
+        html_body = html_part.get_content() if html_part else ""
+        assert_no_known_recipient_addresses(f"Message {idx + 1} body", plain + "\n" + html_body, recipients)
+
+    if errors:
+        raise ValueError("Recipient privacy gate failed: " + "; ".join(errors))
 
 
 def validate_digest_structure(digest: dict, items: list[dict]):
@@ -282,8 +347,10 @@ def validate_rendered_message(msg: EmailMessage, recipients: list[str], internal
         errors.append(f"HTML body has fewer hyperlinks than expected for {expected_item_count} items")
     if "Content-Type: multipart/alternative" not in msg.as_string().split("\n\n", 1)[0]:
         errors.append("Message is not multipart/alternative")
-    if internal_test and recipients != read_recipients([], internal_test=True):
-        errors.append("Internal test mode recipients differ from recipients-internal-test.csv")
+    if internal_test:
+        allowed = {normalize_email(r) for r in read_recipients([], internal_test=True)}
+        if any(normalize_email(r) not in allowed for r in recipients):
+            errors.append("Internal test mode recipient is not in recipients-internal-test.csv")
     if errors:
         raise ValueError("Rendered email QC failed: " + "; ".join(errors))
 
@@ -314,14 +381,37 @@ def load_send_state() -> dict:
     if not SEND_STATE_PATH.exists():
         return {}
     try:
-        return json.loads(read_text(SEND_STATE_PATH))
+        return scrub_send_state(json.loads(read_text(SEND_STATE_PATH)))
     except Exception:
         return {}
 
 
+def scrub_send_state(state: dict) -> dict:
+    if not isinstance(state, dict):
+        return {}
+    for mode_data in state.values():
+        if not isinstance(mode_data, dict):
+            continue
+        for sent in mode_data.values():
+            if not isinstance(sent, dict):
+                continue
+            raw_recipients = sent.pop("recipients", None)
+            if raw_recipients is not None:
+                recipients = [str(r) for r in raw_recipients if str(r).strip()]
+                sent["recipient_count"] = len(recipients)
+                sent["recipient_fingerprints"] = [recipient_fingerprint(r) for r in recipients]
+            sent.setdefault("recipient_count", 0)
+            sent.setdefault("recipient_fingerprints", [])
+            sent["state_version"] = SEND_STATE_VERSION
+    return state
+
+
 def save_send_state(state: dict):
     STATE_DIR.mkdir(parents=True, exist_ok=True)
-    SEND_STATE_PATH.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    sanitized = scrub_send_state(state)
+    serialized = json.dumps(sanitized, indent=2, sort_keys=True) + "\n"
+    assert_no_email_tokens("Send state", serialized)
+    SEND_STATE_PATH.write_text(serialized, encoding="utf-8")
 
 
 def send_mode_key(internal_test: bool) -> str:
@@ -333,10 +423,10 @@ def assert_not_already_sent(digest_date: str, recipients: list[str], internal_te
     mode = send_mode_key(internal_test)
     sent = state.get(mode, {}).get(digest_date)
     if sent:
-        prior_recipients = sent.get("recipients", [])
+        prior_count = sent.get("recipient_count", 0)
         raise ValueError(
             f"Refusing duplicate send for {digest_date} in {mode} mode. "
-            f"Already sent at {sent.get('sent_at')} to {len(prior_recipients)} recipient(s): {', '.join(prior_recipients)}"
+            f"Already sent at {sent.get('sent_at')} to {prior_count} recipient(s)."
         )
 
 
@@ -346,7 +436,9 @@ def record_send(digest_date: str, recipients: list[str], internal_test: bool = F
     bucket = state.setdefault(mode, {})
     bucket[digest_date] = {
         "sent_at": datetime.now().isoformat(timespec="seconds"),
-        "recipients": recipients,
+        "recipient_count": len(recipients),
+        "recipient_fingerprints": [recipient_fingerprint(r) for r in recipients],
+        "state_version": SEND_STATE_VERSION,
     }
     save_send_state(state)
 
@@ -441,6 +533,12 @@ def send_messages(messages: list[EmailMessage]):
             s.send_message(msg)
 
 
+def serialized_redacted_messages(messages: list[EmailMessage]) -> str:
+    serialized = "\n\n".join(redact_email_text(msg.as_string()) for msg in messages)
+    assert_no_email_tokens("Redacted message preview", serialized)
+    return serialized
+
+
 def main():
     args = parse_args()
     digest_date = pick_date(args.date)
@@ -454,13 +552,17 @@ def main():
     messages = [build_message(digest, items, recipient) for recipient in recipients]
     for msg in messages:
         validate_rendered_message(msg, [msg["To"]], internal_test=args.internal_test, expected_item_count=len(items))
+    validate_recipient_privacy(messages, recipients)
     verify_web_links_before_send(digest, items)
+    redacted_preview = None
     if args.preview_path:
-        preview = "\n\n".join(msg.as_string() for msg in messages)
-        Path(args.preview_path).write_text(preview, encoding="utf-8")
+        redacted_preview = serialized_redacted_messages(messages)
+        Path(args.preview_path).write_text(redacted_preview, encoding="utf-8")
     if args.dry_run or args.preview_path:
         if args.dry_run:
-            print("\n\n".join(msg.as_string() for msg in messages))
+            if redacted_preview is None:
+                redacted_preview = serialized_redacted_messages(messages)
+            print(redacted_preview)
         else:
             print(f"PREVIEW_WRITTEN {args.preview_path}")
         return

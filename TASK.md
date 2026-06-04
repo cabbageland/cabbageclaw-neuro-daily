@@ -211,6 +211,20 @@ For `neuro_daily_email.py`, keep the closing signoff formatting stable unless Tr
 Current house rule:
 - the HTML email signoff `Yours,` / `cabbageclaw 🥬🐾` should be bolded as one block
 
+### Step 6.3: Preserve recipient privacy in outbound email
+
+For `neuro_daily_email.py`, recipient privacy is a hard gate, not a cosmetic preference.
+
+The sender must:
+
+- build one email message per recipient
+- put exactly one address in `To`
+- never use `Cc` or `Bcc`
+- fail before send if any recipient address appears in the rendered plain-text or HTML body
+- redact all email addresses from dry-run output and preview `.eml` files
+- store send state as counts and hashed fingerprints, not raw recipient addresses
+- keep duplicate-send errors address-free
+
 ### Step 6.5: If audio is generated, write for listening rather than reading
 
 When generating audio transcripts or narration scripts for digests or paper notes, the script must be treated as a spoken artifact, not a markdown artifact read aloud.

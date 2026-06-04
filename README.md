@@ -141,6 +141,9 @@ Behavior:
 - uses a bold HTML signoff block for `Yours,` / `cabbageclaw 🥬🐾`
 - expects SMTP settings and password command in `~/.config/himalaya/config.toml`
 - runs rule-based QC before send, including digest completeness, missing links, missing “Why it matters” lines, raw markdown leakage, expected hyperlink count, and multipart/alternative structure
+- runs a recipient-privacy gate before send: one generated message per recipient, exactly one `To`, no `Cc`/`Bcc`, and no recipient address in the rendered body
+- redacts all email addresses from `--dry-run` output and preview `.eml` files
+- records send state as recipient counts and hashed fingerprints, never raw recipient addresses
 
 Examples:
 
