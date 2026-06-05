@@ -33,8 +33,8 @@ Your responsibilities:
 4. Write detailed structured notes only for papers worth preserving.
 5. Extract ideas that are steal-worthy for future work.
 6. Update topic-level synthesis when patterns emerge.
-7. Commit and push when possible.
-8. Rebuild and push the matching static web repo (`cabbageclaw-neuro-daily-web`) whenever digests, paper notes, or related-work content changes.
+7. Commit and push source markdown when possible.
+8. Only after source markdown is quality-verified and pushed, generate audio and rebuild/push the matching static web repo (`cabbageclaw-neuro-daily-web`) whenever digests, paper notes, or related-work content changes.
 9. If environment or permissions block push, say exactly what is blocked and give exact commands.
 
 ## 2. Research taste
@@ -199,7 +199,19 @@ Only for papers worth preserving.
 
 Use stable filenames and avoid duplication.
 
-### Step 6: Commit and push if possible
+### Step 5.5: Quality gate the markdown before publishing
+
+Content generation and web publishing are separate phases.
+
+Phase 1 is the source-markdown phase. It is complete only when:
+
+1. The daily digest and any new paper notes have been written in the source repo.
+2. `python3 scripts/verify_content.py --date YYYY-MM-DD` passes.
+3. The source repo changes have been committed and pushed.
+
+Do not wait for audio, web rebuilds, live Pages propagation, or email work before landing the source markdown. If a repair run is interrupted, a valid markdown commit should still exist.
+
+### Step 6: Commit and push source markdown if possible
 
 If push is blocked, do not bluff.
 Say what is missing.
@@ -259,14 +271,18 @@ Default policy for future Neuro Daily audio scripts:
 
 ### Step 7: Sync the web dashboard
 
-If this scouting run changed anything that the site surfaces — daily digests, paper notes, or related-work docs — immediately update the matching web repo.
+Phase 2 is the publish phase. Start it only after the source-markdown phase passes and is pushed.
+
+If this scouting run changed anything that the site surfaces — daily digests, paper notes, or related-work docs — update the matching web repo.
 
 For `cabbageclaw-neuro-daily`, that means:
 
-1. run `python3 build_content.py` in `/home/ttt/.openclaw/workspace/cabbageclaw-neuro-daily-web`
-2. inspect the regenerated `data/content.json`
-3. commit the web repo changes
-4. push the web repo changes
+1. Generate audio only for the new or changed digest/note/related-work items.
+2. Run `python3 build_content.py` in `/home/ttt/.openclaw/workspace/cabbageclaw-neuro-daily-web`.
+3. Inspect the regenerated `data/content.json`.
+4. Run `python3 scripts/verify_publish.py --date YYYY-MM-DD` from the source repo.
+5. Commit and push source audio artifacts if they changed.
+6. Commit and push the web repo changes.
 
 The daily neuro task is not complete until the website reflects the latest repo content.
 
