@@ -2,9 +2,11 @@
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import re
 import sys
 from datetime import datetime
+from email.message import EmailMessage
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -95,6 +97,36 @@ def verify_note(path: Path, *, require_date: str | None, errors: list[str]) -> N
         errors.append(f"{path.relative_to(ROOT)} says abstract-only without explicit full-text-attempt caveat")
 
 
+def verify_email_render(date: str, errors: list[str]) -> None:
+    module_path = ROOT / "neuro_daily_email.py"
+    spec = importlib.util.spec_from_file_location("neuro_daily_email", module_path)
+    if spec is None or spec.loader is None:
+        errors.append("could not load neuro_daily_email.py for render verification")
+        return
+
+    neuro_daily_email = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(neuro_daily_email)
+
+    try:
+        digest = neuro_daily_email.parse_digest(ROOT / "daily_papers" / f"{date}.md")
+        items = neuro_daily_email.build_items(digest)
+        neuro_daily_email.validate_digest_structure(digest, items)
+
+        msg = EmailMessage()
+        msg["Subject"] = digest["title"]
+        msg["From"] = "neuro-daily@example.invalid"
+        msg["To"] = "recipient@example.invalid"
+        msg.set_content(neuro_daily_email.render_plain(digest, items))
+        msg.add_alternative(neuro_daily_email.render_html(digest, items), subtype="html")
+        neuro_daily_email.validate_rendered_message(
+            msg,
+            ["recipient@example.invalid"],
+            expected_item_count=len(items),
+        )
+    except Exception as exc:
+        errors.append(f"email render verification failed: {exc}")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Verify Neuro Daily markdown content before web/audio publishing")
     parser.add_argument("--date", default=today_la(), help="Digest date to verify, YYYY-MM-DD")
@@ -127,6 +159,8 @@ def main() -> int:
             note_path = ROOT / "paper_notes" / f"{slug}.md"
             if not note_path.exists():
                 errors.append(f"ranked title links missing note: paper_notes/{slug}.md")
+
+        verify_email_render(args.date, errors)
 
     for note_path in sorted((ROOT / "paper_notes").glob("*.md")):
         if note_path.name == ".gitkeep":

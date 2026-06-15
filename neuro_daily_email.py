@@ -111,24 +111,28 @@ def parse_digest(path: Path) -> dict:
     return result
 
 
-def split_overview_paragraphs(overview: str) -> list[str]:
-    paras = [p.strip() for p in overview.split("\n\n") if p.strip()]
-    return [strip_markdown_emphasis(p) for p in paras[:4]]
+def extract_markdown_section(text: str, heading: str) -> str:
+    pattern = rf"^## {re.escape(heading)}\n+(.*?)(?=^## |\Z)"
+    match = re.search(pattern, text, flags=re.M | re.S)
+    if not match:
+        return ""
+    paragraphs = [line.strip() for line in match.group(1).splitlines() if line.strip()]
+    return strip_markdown_emphasis(" ".join(paragraphs))
 
 
-def read_note_metadata(slug: str) -> tuple[str | None, str | None]:
+def read_note_metadata(slug: str) -> tuple[str | None, str | None, str | None]:
     note_path = NOTES_DIR / f"{slug}.md"
     if not note_path.exists():
-        return None, None
+        return None, None, None
     text = read_text(note_path)
     title = None
-    doi = None
+    paper_url = None
     for line in text.splitlines()[:20]:
         if line.startswith("# "):
             title = line[2:].strip()
         if line.startswith("* Link: "):
-            doi = line.split(": ", 1)[1].strip()
-    return title, doi
+            paper_url = line.split(": ", 1)[1].strip()
+    return title, paper_url, extract_markdown_section(text, "One-paragraph overview")
 
 
 def normalize_web_markdown_url(url: str) -> str:
@@ -156,7 +160,6 @@ def slug_from_note_url(url: str) -> str:
 
 
 def build_items(digest: dict) -> list[dict]:
-    paras = split_overview_paragraphs(digest["overview"])
     items = []
     for idx, title in enumerate(digest["ranked_titles"][:4]):
         note_url = digest["note_links"].get(title)
@@ -164,18 +167,21 @@ def build_items(digest: dict) -> list[dict]:
             continue
         note_url = normalize_web_markdown_url(note_url)
         slug = slug_from_note_url(note_url)
-        note_title, paper_url = read_note_metadata(slug)
+        note_title, paper_url, note_overview = read_note_metadata(slug)
         if not paper_url:
             raise ValueError(f"Missing paper link in note: {slug}")
-        para = paras[idx] if idx < len(paras) else ""
-        body, why = extract_body_and_why(para)
+        if not note_overview:
+            raise ValueError(
+                f"Missing email body source for ranked item {idx + 1}: "
+                f"paper_notes/{slug}.md lacks One-paragraph overview"
+            )
         items.append({
             "title": title,
             "paper_url": paper_url,
             "paper_label": note_title or title,
             "notes_url": note_url,
-            "body": body,
-            "why": digest["ranked_why"].get(title, why),
+            "body": note_overview,
+            "why": digest["ranked_why"].get(title, ""),
         })
     if not items:
         raise ValueError("No ranked papers with preserved note links were available for email rendering")
@@ -204,16 +210,6 @@ def ranked_why_map(digest_text: str) -> dict[str, str]:
         if current_title and why_match:
             result[current_title] = strip_markdown_emphasis(why_match.group(1).strip())
     return result
-
-
-def extract_body_and_why(paragraph: str) -> tuple[str, str]:
-    paragraph = paragraph.strip()
-    match = re.search(r"Why it matters:\s*(.+)$", paragraph)
-    if match:
-        body = paragraph[:match.start()].strip()
-        why = match.group(1).strip()
-        return strip_markdown_emphasis(body), strip_markdown_emphasis(why)
-    return strip_markdown_emphasis(paragraph), ""
 
 
 def strip_markdown_emphasis(text: str) -> str:
