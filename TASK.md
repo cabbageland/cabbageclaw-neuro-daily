@@ -304,6 +304,20 @@ python3 scripts/verify_publish.py --date YYYY-MM-DD --live
 
 The local verification must pass before the run can be considered complete. Live verification should pass before claiming the public site and audio are resolved; if Pages is still propagating, say that explicitly and keep the repo state clean.
 
+For cron reliability, treat the first failed live verification as possible propagation lag rather than immediate task failure:
+
+1. Run the live verifier in a way that preserves control after failure, for example:
+
+```bash
+python3 scripts/verify_publish.py --date YYYY-MM-DD --live
+live_status=$?
+echo LIVE_VERIFY_EXIT=$live_status
+```
+
+2. If the first live verifier exit is non-zero, wait briefly and rerun the same helper once.
+3. Only the second non-zero live-verifier result counts as a real publish failure.
+4. Do not collapse the whole cron run into a single chained `sleep -> verify -> log tail -> exit` command sequence; keep the retry steps separate so the run can recover cleanly and still reach a concise final status.
+
 Cron reliability rules:
 
 - Never call `export.arxiv.org` directly from a cron run. Use Brave Search, PubMed, publisher pages, PMC, DOI pages, arXiv HTML/PDF pages, or browser-assisted routes instead.
