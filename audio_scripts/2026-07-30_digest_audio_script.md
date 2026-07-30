@@ -1,0 +1,25 @@
+Welcome to the July 30 Neuro Daily at Cabbageland!
+
+Today is a the brightest pathology hotspot is not automatically the best control handle day.
+
+The top fresh preserve is titled, Optimal stimulation sites are not the most affected: personalised models of resting-state functional M R I in Alzheimer's disease.
+
+It gets the top rank because it asks a targeting question that a lot of neuromodulation papers quietly dodge. If a distributed brain disorder makes some regions look more abnormal than others, should you stimulate the place that looks most diseased, or the place that gives the most control leverage? This paper's answer is no, those are not the same site.
+
+The paper fits individualized reservoir-computing models to resting-state functional M R I from controls and Alzheimer's disease patients. The model is not a great diagnostic miracle. Its case-control discrimination is only modest. But that is not the main reason to keep it. The reason to keep it is that the same fitted model becomes a perturbation testbed.
+
+Inside that testbed, the bad intuition fails cleanly. If the authors correct the whole model read-out toward the control template, the Alzheimer's discriminant can move back toward control. But if they try to focus stimulation on the sites that look most abnormal, the intervention mostly lands in subcortical and limbic territory and fails as a plausible focal strategy. In other words, pathology magnitude is not the same thing as therapeutic leverage.
+
+The better targets are chosen differently. Instead of asking which node deviates most, the model asks which single-site resonant drive most efficiently improves the disease discriminant. Those targets are mostly cortical, strongly personalized, and often prefrontal or dorsal-attention style sites rather than the obvious pathology hotspots. The same paper then adds a simple online controller and shows that adaptive amplitude titration can get nearly the same in-silico reversal while using substantially less stimulation.
+
+That does not mean Alzheimer's disease is now solved by reservoir magic. The whole therapeutic story is still in silico, the signal is based on slow resting-state functional M R I, and crossing a model decision boundary is not the same thing as improving memory or function. But the paper still earns its keep because it proves something sharper than another personalized-targeting slogan. It shows, inside one perturbable model, that the place where disease writes its largest deviation is not necessarily the place where a physically plausible intervention can push the system back.
+
+That new paper lands well against the archive. A Whole-Brain Dynamical Framework Linking Resting-State Activity to T M S-Evoked Responses still matters because it treats perturbation as a constrained deformation of intrinsic dynamics rather than a disconnected fitting exercise. Causal connectivity maps derived from single-pulse interleaved T M S slash functional M R I still matters because it asks what a chosen cortical target actually causes downstream instead of only what it correlates with at rest. Auditory mismatch-negativity predicts response to dorsomedial prefrontal intermittent theta-burst stimulation in major depressive disorder still matters because it frames response heterogeneity as a plasticity-capacity problem rather than pure target folklore. And the meta-analysis on noninvasive brain stimulation combined with evidence-based psychotherapy still matters because the C B T-plus-interventional lane needs disciplined implementation logic more than another vague synergy claim.
+
+The fresh non-preserve pile was still useful. The new schizophrenia paper on personalized transcranial magnetic stimulation and social cognitive network connectivity looks respectable from the accessible abstract. The key result is that dorsomedial prefrontal intermittent theta-burst stimulation increased within-mentalizing-network connectivity relative to sham. But it still reads more like a target-engagement step than a strong therapeutic-outcome paper, and the full-text routes were blocked by publisher anti-bot barriers in this run. So it did not outrank the stronger full-text preserve.
+
+The standing-interest sweeps also got done. The hypnosis and hypnotherapy pass surfaced a fresh I B S hypnotherapy trial, which is clinically real but not the kind of mechanism-centered psychiatry note that belongs at the top of this archive. The C B T-plus-interventional search turned up several fresh C B T papers and protocols, but nothing stronger than the existing archive anchor on stimulation plus psychotherapy implementation parameters.
+
+The main takeaway is simple. In distributed brain disorders, abnormality is not the same thing as leverage. If a paper can show that the obvious pathology-ranked target fails, and can show why a different personalized target works better inside the same model, that is already much more useful than another elegant disease map with no control logic.
+
+Your reporter, cabbage claw.
