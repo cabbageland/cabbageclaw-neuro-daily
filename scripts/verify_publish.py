@@ -106,7 +106,12 @@ def check_audio_entry(
 def main() -> int:
     parser = argparse.ArgumentParser(description="Verify Neuro Daily publish wiring")
     parser.add_argument("--date", default=today_la(), help="Digest date to verify, YYYY-MM-DD")
-    parser.add_argument("--live", action="store_true", help="Also verify live GitHub Pages content/audio")
+    parser.add_argument("--live", action="store_true", help="Also verify live GitHub Pages content")
+    parser.add_argument(
+        "--require-audio",
+        action="store_true",
+        help="also require audio content entries and live audio URLs",
+    )
     args = parser.parse_args()
 
     errors: list[str] = []
@@ -141,13 +146,14 @@ def main() -> int:
             if not any(item.get("date") == args.date for item in live_content.get("digests", [])):
                 errors.append(f"missing live digest index entry for {args.date}")
 
-    check_audio_entry(
-        content=content,
-        source_key=digest_key,
-        errors=errors,
-        check_live=args.live,
-        live_content=live_content,
-    )
+    if args.require_audio:
+        check_audio_entry(
+            content=content,
+            source_key=digest_key,
+            errors=errors,
+            check_live=args.live,
+            live_content=live_content,
+        )
 
     note_slugs = note_slugs_linked_from_digest(digest_text) | notes_surfaced_on(args.date)
     for slug in sorted(note_slugs):
@@ -165,13 +171,14 @@ def main() -> int:
                 errors.append(f"missing live content markdown for {note_key}")
             if not any(item.get("slug") == slug for item in live_content.get("notes", [])):
                 errors.append(f"missing live note index entry for {slug}")
-        check_audio_entry(
-            content=content,
-            source_key=note_key,
-            errors=errors,
-            check_live=args.live,
-            live_content=live_content,
-        )
+        if args.require_audio:
+            check_audio_entry(
+                content=content,
+                source_key=note_key,
+                errors=errors,
+                check_live=args.live,
+                live_content=live_content,
+            )
 
     if errors:
         print("VERIFY_FAILED")
@@ -183,6 +190,7 @@ def main() -> int:
     print(f"date={args.date}")
     print(f"notes_checked={len(note_slugs)}")
     print(f"live={str(args.live).lower()}")
+    print(f"require_audio={str(args.require_audio).lower()}")
     return 0
 
 

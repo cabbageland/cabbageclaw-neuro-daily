@@ -128,7 +128,7 @@ def verify_email_render(date: str, errors: list[str]) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Verify Neuro Daily markdown content before web/audio publishing")
+    parser = argparse.ArgumentParser(description="Verify Neuro Daily markdown content before web publishing")
     parser.add_argument("--date", default=today_la(), help="Digest date to verify, YYYY-MM-DD")
     args = parser.parse_args()
 

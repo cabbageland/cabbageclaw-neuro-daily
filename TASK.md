@@ -34,7 +34,7 @@ Your responsibilities:
 5. Extract ideas that are steal-worthy for future work.
 6. Update topic-level synthesis when patterns emerge.
 7. Commit and push source markdown when possible.
-8. Only after source markdown is quality-verified and pushed, generate audio and rebuild/push the matching static web repo (`cabbageclaw-neuro-daily-web`) whenever digests, paper notes, or related-work content changes.
+8. Only after source markdown is quality-verified and pushed, rebuild/push the matching static web repo (`cabbageclaw-neuro-daily-web`) whenever digests, paper notes, or related-work content changes. Do not add listening audio unless Tracy explicitly requests audio for a specific item.
 9. If environment or permissions block push, say exactly what is blocked and give exact commands.
 
 ## 2. Research taste
@@ -257,7 +257,7 @@ Requirements:
 The bar:
 A good audio transcript should feel like a compact private briefing, not like markdown being exorcised through a speaker.
 
-Default policy for future Neuro Daily audio scripts:
+Policy for explicitly requested Neuro Daily audio scripts:
 - follow `tts_conversion_instructions.md` as the project style guide
 - use the fixed standard opening and closing unless Tracy explicitly asks otherwise
 - lock the default Piper voice to `en_US-hfc_male-medium`
@@ -277,12 +277,11 @@ If this scouting run changed anything that the site surfaces — daily digests, 
 
 For `cabbageclaw-neuro-daily`, that means:
 
-1. Generate audio only for the new or changed digest/note/related-work items.
-2. Run `python3 build_content.py` in `/home/ttt/.openclaw/workspace/cabbageclaw-neuro-daily-web`.
-3. Inspect the regenerated `data/content.json`.
-4. Run `python3 scripts/verify_publish.py --date YYYY-MM-DD` from the source repo.
-5. Commit and push source audio artifacts if they changed.
-6. Commit and push the web repo changes.
+1. Run `python3 build_content.py` in `/home/ttt/.openclaw/workspace/cabbageclaw-neuro-daily-web`.
+2. Inspect the regenerated `data/content.json`.
+3. Run `python3 scripts/verify_publish.py --date YYYY-MM-DD` from the source repo.
+4. Commit and push the source repo changes if they changed.
+5. Commit and push the web repo changes.
 
 The daily neuro task is not complete until the website reflects the latest repo content.
 
@@ -290,7 +289,7 @@ The daily neuro task is not complete until the website reflects the latest repo 
 
 Before doing fresh scouting in a cron run, determine today's America/Los_Angeles date and check whether `daily_papers/YYYY-MM-DD.md` already exists. If it does, repair and verify the existing publish path instead of starting another full scout. Do not rewrite the day just because the cron was retried.
 
-After changing the digest, notes, audio scripts, audio files, or web repo, run:
+After changing the digest, notes, optional explicitly requested audio files, or web repo, run:
 
 ```bash
 python3 scripts/verify_publish.py --date YYYY-MM-DD
@@ -302,7 +301,7 @@ After pushing and once GitHub Pages has had time to update, also run:
 python3 scripts/verify_publish.py --date YYYY-MM-DD --live
 ```
 
-The local verification must pass before the run can be considered complete. Live verification should pass before claiming the public site and audio are resolved; if Pages is still propagating, say that explicitly and keep the repo state clean.
+The local verification must pass before the run can be considered complete. Live verification should pass before claiming the public site is resolved; if Pages is still propagating, say that explicitly and keep the repo state clean.
 
 For cron reliability, treat the first failed live verification as possible propagation lag rather than immediate task failure:
 
@@ -323,7 +322,7 @@ Cron reliability rules:
 - Never call `export.arxiv.org` directly from a cron run. Use Brave Search, PubMed, publisher pages, PMC, DOI pages, arXiv HTML/PDF pages, or browser-assisted routes instead.
 - If a source fetch hangs, errors, or produces huge output, abandon that source path and continue. One source failure is not a task failure.
 - Do not dump raw search HTML, publisher HTML, full PDF text, or full article text into the transcript. Save bulky material to files and inspect small slices.
-- Generate audio only for new or changed digest/note/related-work items unless explicitly doing maintenance.
+- Do not generate audio for routine Neuro Daily publishes. Only generate audio for a specific item if Tracy explicitly asks for it.
 - Finish with a concise final status so the cron run reaches completion.
 
 ## 5. Required paper note template
