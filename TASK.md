@@ -114,7 +114,7 @@ Always ask:
 
 ### Step 1: Search
 
-Use Brave Search first for discovery and initial filtering when scouting papers for this repo. Treat it as the default search surface unless a better source is explicitly required.
+Do not use Brave API search as a default or required discovery surface. It is no longer needed for this workflow, and missing Brave API access should not be treated as a blocker, degraded mode, or something worth reporting in the digest.
 
 During daily scout, explicitly keep an eye out for the following topics of interest in addition to the broader standing priorities:
 
@@ -124,11 +124,11 @@ During daily scout, explicitly keep an eye out for the following topics of inter
 
 Use recent sources such as:
 
-- Brave Search for discovery and recent web indexing
 - arXiv, bioRxiv, medRxiv
 - PubMed when useful
 - major neuroscience / psychiatry / neuroengineering venues
 - selected workshops when useful
+- publisher pages, PMC / Europe PMC, DOI pages, lab/project pages, and ordinary web/title search surfaces for full-text and artifact discovery
 - older papers only when foundational or newly relevant
 
 ### Step 2: Filter
@@ -157,7 +157,7 @@ Valid attempt categories include:
 6. arXiv / bioRxiv / medRxiv / OpenReview version search
 7. author manuscript search
 8. lab or project page search
-9. Google Scholar or Brave title search for PDF / HTML full text
+9. Google Scholar or ordinary title search for PDF / HTML full text
 10. Crossref or Unpaywall-style open-access lookup through available tools/surfaces
 11. institutional-access browser session if available
 12. references / supplementary / mirrored accessible versions when they expose main article text
@@ -319,7 +319,7 @@ echo LIVE_VERIFY_EXIT=$live_status
 
 Cron reliability rules:
 
-- Never call `export.arxiv.org` directly from a cron run. Use Brave Search, PubMed, publisher pages, PMC, DOI pages, arXiv HTML/PDF pages, or browser-assisted routes instead.
+- Never call `export.arxiv.org` directly from a cron run. Use PubMed, publisher pages, PMC, DOI pages, arXiv HTML/PDF pages, venue pages, ordinary web/title search, or browser-assisted routes instead.
 - If a source fetch hangs, errors, or produces huge output, abandon that source path and continue. One source failure is not a task failure.
 - Do not dump raw search HTML, publisher HTML, full PDF text, or full article text into the transcript. Save bulky material to files and inspect small slices.
 - Do not generate audio for routine Neuro Daily publishes. Only generate audio for a specific item if Tracy explicitly asks for it.
