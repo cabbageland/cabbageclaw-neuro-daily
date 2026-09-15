@@ -142,6 +142,8 @@ Without process-level outcomes, combination studies easily collapse back into ge
 
 The evidence base for CBT plus intervention psychiatry is still more suggestive than settled.
 
+The 2026 Frontiers meta-analysis of tDCS combined with cognitive-behavioral interventions for depressive disorders is now an explicit guardrail. Across ten sham-controlled randomized trials and 321 patients, active tDCS did not reliably outperform sham tDCS when both were paired with heterogeneous cognitive-behavioral interventions. The broad result was null for depressive symptoms, response, remission, and quality of life, including CBT and cognitive-control-training subgroup analyses. The evidence was low to very low certainty and underpowered, so the right conclusion is not "never combine stimulation with therapy." The right conclusion is harsher and more useful: co-administering tDCS with CBT-adjacent work is not enough. Timing, target process, stimulation parameters, patient subgroup, and mechanistic readouts all have to earn their place.
+
 What looks promising:
 - pairing intervention with an explicit learning or rehabilitation scaffold
 - individualized targeting tied to symptom-relevant circuits
