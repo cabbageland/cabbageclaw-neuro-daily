@@ -5,8 +5,8 @@
 * Title: Network Reorganization of Anterograde Thalamic Connectivity During Non-Periodic Patterned Deep Brain Stimulation
 * Authors: Teryn D. Johnson, Bobby Mohan, Harvey Huang, Justin Cramer, Cornelia Drees, Matthew Hoerth, Amy Crepeau, Joseph Drazkowski, Katherine Noe, Leslie Baxter, Amir A. Mbonde, Christopher Harris, Nuri Ince, Kai Miller, Dora Hermes, Gregory Worrell, Jonathon J. Parker
 * Year: 2026
-* Venue / source: medRxiv
-* Link: https://doi.org/10.64898/2026.01.22.26344468
+* Venue / source: iScience; originally surfaced from the medRxiv preprint
+* Link: https://doi.org/10.1016/j.isci.2026.117659
 * Date surfaced: 2026-05-24
 * Why selected in one sentence: It turns ANT-DBS patterning into a short-horizon network-biomarker question instead of treating frequency and amplitude as the only knobs that matter.
 
