@@ -227,6 +227,8 @@ Current house rule:
 
 For `neuro_daily_email.py`, recipient privacy is a hard gate, not a cosmetic preference.
 
+Subscriber lists are private local data. Never commit or push `recipients*.csv`, including test lists or renamed copies, to this or the web repository. Keep email previews and send state local too. Stage only intended publication files; never force-add ignored private files. Before each push, check that no real recipient CSV is tracked or staged. Example templates ending in `.csv.example` may remain public only with dummy data.
+
 The sender must:
 
 - build one email message per recipient
