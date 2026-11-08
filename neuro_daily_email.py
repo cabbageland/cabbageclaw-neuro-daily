@@ -451,16 +451,27 @@ def smtp_settings() -> tuple[str, int, str, str]:
     return host.group(1), int(port.group(1)), login.group(1), password
 
 
+def email_intro_lines(digest_date: str) -> list[dict]:
+    """Load an optional, local-only introduction for this digest date."""
+    intro_path = STATE_DIR / "email_intros" / f"{digest_date}.json"
+    if not intro_path.exists():
+        return []
+    return json.loads(read_text(intro_path))
+
+
 def render_plain(digest: dict, items: list[dict]) -> str:
     digest_url = public_app_route(f"{DIGEST_WEB_BASE}/{digest['date']}")
-    lines = [
+    lines = [line["text"] for line in email_intro_lines(digest["date"])]
+    if lines:
+        lines.append("")
+    lines.extend([
         "Hello!",
         "",
         f"Welcome to the {human_date(digest['date'])} Neuro Daily at Cabbageland: {digest_url}",
         "",
         digest["theme"],
         "",
-    ]
+    ])
     for item in items:
         notes_url = public_app_route(item["notes_url"])
         lines.extend([
@@ -482,12 +493,19 @@ def render_plain(digest: dict, items: list[dict]) -> str:
 
 def render_html(digest: dict, items: list[dict]) -> str:
     digest_url = public_app_route(f"{DIGEST_WEB_BASE}/{digest['date']}")
-    parts = [
-        "<html><body>",
+    parts = ["<html><body>"]
+    intro_lines = email_intro_lines(digest["date"])
+    if intro_lines:
+        intro_html = []
+        for line in intro_lines:
+            text = html.escape(line["text"])
+            intro_html.append(f"<strong>{text}</strong>" if line.get("bold") else text)
+        parts.append("<p>" + "<br>".join(intro_html) + "</p>")
+    parts.extend([
         "<p>Hello!</p>",
         f"<p>Welcome to the <a href=\"{html.escape(digest_url)}\">{html.escape(human_date(digest['date']))} Neuro Daily</a> at Cabbageland.</p>",
         f"<p>{html.escape(digest['theme'])}</p>",
-    ]
+    ])
     for item in items:
         notes_url = public_app_route(item["notes_url"])
         parts.extend([
