@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 import argparse
 import csv
+import fcntl
 import hashlib
 import html
 import json
+import os
 import re
 import smtplib
 import ssl
 import subprocess
+import tempfile
 import urllib.request
+from contextlib import contextmanager
 from datetime import date, datetime
 from email.message import EmailMessage
 from email.utils import getaddresses
@@ -377,9 +381,16 @@ def load_send_state() -> dict:
     if not SEND_STATE_PATH.exists():
         return {}
     try:
-        return scrub_send_state(json.loads(read_text(SEND_STATE_PATH)))
-    except Exception:
-        return {}
+        state = json.loads(read_text(SEND_STATE_PATH))
+        if not isinstance(state, dict) or any(
+            not isinstance(bucket, dict)
+            or any(not isinstance(entry, dict) or not entry for entry in bucket.values())
+            for bucket in state.values()
+        ):
+            raise ValueError("Invalid send state structure")
+        return scrub_send_state(state)
+    except (OSError, ValueError) as exc:
+        raise ValueError("Refusing to send: duplicate-send state is unreadable; review it before retrying") from exc
 
 
 def scrub_send_state(state: dict) -> dict:
@@ -407,7 +418,32 @@ def save_send_state(state: dict):
     sanitized = scrub_send_state(state)
     serialized = json.dumps(sanitized, indent=2, sort_keys=True) + "\n"
     assert_no_email_tokens("Send state", serialized)
-    SEND_STATE_PATH.write_text(serialized, encoding="utf-8")
+    # A reader must never see a truncated state file during a write or crash.
+    with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=STATE_DIR, delete=False) as handle:
+        temporary_path = Path(handle.name)
+        try:
+            handle.write(serialized)
+            handle.flush()
+            os.fsync(handle.fileno())
+        except BaseException:
+            temporary_path.unlink(missing_ok=True)
+            raise
+    try:
+        os.replace(temporary_path, SEND_STATE_PATH)
+    finally:
+        temporary_path.unlink(missing_ok=True)
+
+
+@contextmanager
+def send_state_lock():
+    """Serialize the duplicate check, SMTP delivery, and state commit across processes."""
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+    with (STATE_DIR / "email_send.lock").open("a") as handle:
+        fcntl.flock(handle, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(handle, fcntl.LOCK_UN)
 
 
 def send_mode_key(internal_test: bool) -> str:
@@ -420,23 +456,39 @@ def assert_not_already_sent(digest_date: str, recipients: list[str], internal_te
     sent = state.get(mode, {}).get(digest_date)
     if sent:
         prior_count = sent.get("recipient_count", 0)
+        if sent.get("status") == "sending":
+            raise ValueError(
+                f"Refusing duplicate send for {digest_date} in {mode} mode. "
+                "An earlier attempt started; delivery may be partial. Review it before retrying."
+            )
         raise ValueError(
             f"Refusing duplicate send for {digest_date} in {mode} mode. "
             f"Already sent at {sent.get('sent_at')} to {prior_count} recipient(s)."
         )
 
 
-def record_send(digest_date: str, recipients: list[str], internal_test: bool = False):
+def record_send(digest_date: str, recipients: list[str], internal_test: bool = False, *, status: str = "sent"):
     state = load_send_state()
     mode = send_mode_key(internal_test)
     bucket = state.setdefault(mode, {})
     bucket[digest_date] = {
-        "sent_at": datetime.now().isoformat(timespec="seconds"),
+        "sent_at" if status == "sent" else "started_at": datetime.now().isoformat(timespec="seconds"),
+        "status": status,
         "recipient_count": len(recipients),
         "recipient_fingerprints": [recipient_fingerprint(r) for r in recipients],
         "state_version": SEND_STATE_VERSION,
     }
     save_send_state(state)
+
+
+def send_once(digest_date: str, recipients: list[str], messages: list[EmailMessage], internal_test: bool = False):
+    with send_state_lock():
+        assert_not_already_sent(digest_date, recipients, internal_test=internal_test)
+        # Reserve before SMTP: if delivery or state commit fails, an automatic
+        # retry must not send the successful part of the batch a second time.
+        record_send(digest_date, recipients, internal_test=internal_test, status="sending")
+        send_messages(messages)
+        record_send(digest_date, recipients, internal_test=internal_test)
 
 
 def smtp_settings() -> tuple[str, int, str, str]:
@@ -580,9 +632,7 @@ def main():
         else:
             print(f"PREVIEW_WRITTEN {args.preview_path}")
         return
-    assert_not_already_sent(digest["date"], recipients, internal_test=args.internal_test)
-    send_messages(messages)
-    record_send(digest["date"], recipients, internal_test=args.internal_test)
+    send_once(digest["date"], recipients, messages, internal_test=args.internal_test)
     print(f"SENT {digest['date']} to {len(recipients)} recipient(s) individually")
 
 

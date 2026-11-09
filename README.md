@@ -144,6 +144,8 @@ Behavior:
 - runs a recipient-privacy gate before send: one generated message per recipient, exactly one `To`, no `Cc`/`Bcc`, and no recipient address in the rendered body
 - redacts all email addresses from `--dry-run` output and preview `.eml` files
 - records send state as recipient counts and hashed fingerprints, never raw recipient addresses
+- serializes delivery with a process-wide file lock and atomically saves duplicate-send state
+- reserves each date before SMTP; partial/uncertain delivery or unreadable state blocks automatic retries until reviewed (never delete state just to retry)
 
 Examples:
 
@@ -154,4 +156,10 @@ python3 neuro_daily_email.py --date 2026-05-18 --internal-test
 python3 neuro_daily_email.py
 ```
 
-The intended cron schedule is 7:30 AM local time, sending that day's digest after a render sanity check using the generated preview. For debugging or maintenance, prefer `--internal-test` so only internal recipients receive the message.
+The single active scheduler is the OpenClaw `Daily cabbageclaw neuro email` job (`45c2ec69-e222-4a63-90c0-098b82e1f6b3`) at 7:30 AM America/Los_Angeles. Do not also install a system crontab sender: the legacy entry was disabled after a duplicate batch on 2026-11-09. Preview and dry-run modes never reserve or send a batch. For debugging, prefer a no-send preview; `--internal-test` still sends actual email and requires authorization.
+
+Run the offline delivery-safety checks (mock SMTP only):
+
+```bash
+python3 -m unittest discover -s tests -v
+```
