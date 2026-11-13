@@ -65,3 +65,9 @@ If not, the paper is usually less useful than the title suggests.
 - **TIS depression biomarker paper:** useful mainly because it separates deep-target rhetoric from response heterogeneity and asks whether baseline brain state predicts benefit.
 - **iTBS plus fNIRS response-prediction paper:** useful because it shifts biomarker logic closer to perturbation-evoked target engagement rather than static baseline description.
 - **Flexible ultrasound patch paper:** adjacent methods reminder that personalization and closed loop claims depend on physically credible field delivery, not just controller language.
+
+## Implementation gate: latent geometry is not recurrent control
+
+The [spinal autonomic-manifold paper](../paper_notes/spinal_manifold_autonomic_digital_twin.md), inspected November 13, 2026, adds a concrete gate between a state representation and a digital-twin claim. Its public FORCE example sets recurrent gain to zero and evaluates a direct nonlinear feature map on the training trial. This supports reconstruction, not the claim that the inspected implementation learned recurrent circuit interactions or an autonomous intervention-response model.
+
+Keep four questions separate: **Does the representation describe state? Does the transition model predict held-out futures? Does an input-response model generalize to new stimulation? Does a deployed controller improve outcomes?** A circular embedding settles none of the later questions. Audit the active state equation, input availability, training-only preprocessing, comparator splits, and calibration labels before interpreting model architecture as mechanism. This is a targeted full-text/static-code judgment, not a numerical reproduction of the paper.
