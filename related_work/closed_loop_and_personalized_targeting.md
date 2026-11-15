@@ -4,6 +4,8 @@
 
 The good neuromodulation papers are converging on a stricter standard than the field used to tolerate.
 
+For multisite designs, add an explicit **input-composition gate**: predict the simultaneous response from separately measured inputs before attributing wider recruitment to nonlinear synergy. This gate is upstream of useful state control and clinical benefit; passing it does not replace either.
+
 If a paper claims precision stimulation, it should specify:
 
 1. **Target** — what circuit, tract, node, or state variable is being targeted?
@@ -57,6 +59,7 @@ If not, the paper is usually less useful than the title suggests.
 
 ## Recent examples informing this heuristic
 
+- **Human multisite single-pulse study (2026-11-15 update):** [Sehgal and colleagues](../paper_notes/multisite_direct_electrical_stimulation_human.md) show that most additional responsive channels are consistent with summed weak responses crossing a threshold. Nonlinear residuals have spatial and temporal structure, but richer anatomy-aware models scarcely improve held-out-participant magnitude prediction. Lower peak current at each site is not established lower total dose or better therapy. Compare with the [three-person depression-DBS composition study](../paper_notes/combinatorial_multisite_stimulation_trd.md), without equating single-pulse voltage responses with train-induced band-power changes. The reusable baseline is additivity; the remaining tests are resource-matched state/behavioral control and clinical benefit.
 - **OCD invasive mapping paper:** strong because it links symptom state, physiology, target search, and later implantation.
 - **BNST-NAc depression DBS biomarker paper:** strong because it gives a candidate state variable and shows it changes with stimulation state.
 - **Precision TMS modeling paper:** useful because it attacks the hidden assumption that a nominal cortical coordinate equals a stable network target across people.
