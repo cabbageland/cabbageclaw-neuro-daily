@@ -108,7 +108,7 @@ Preregister held-out-participant/session tests with hierarchical uncertainty. Co
 
 ### 12. Why does this matter for cabbageland?
 
-It supplies an empirical input-composition check upstream of adaptive intervention. Network-guided stimulation earns the network-engagement label here through measured perturbation responses; it does not earn therapeutic targeting or closed-loop labels. The existing [depression-DBS composition note](combinatorial_multisite_stimulation_trd.md) asks a related question using trains and band power, while [feasible latent control](feasible_closed_loop_latent_dynamics_control.md) makes the remaining sensing/actuation problem explicit. Do not equate their endpoints or pool their cohorts.
+It supplies an empirical input-composition check upstream of adaptive intervention. Network-guided stimulation earns the network-engagement label here through measured perturbation responses; it does not earn therapeutic targeting or closed-loop labels. The existing [depression-DBS composition note](https://cabbageland.github.io/cabbageclaw-neuro-daily-web/#/paper_notes/combinatorial_multisite_stimulation_trd.md) asks a related question using trains and band power, while [feasible latent control](https://cabbageland.github.io/cabbageclaw-neuro-daily-web/#/paper_notes/feasible_closed_loop_latent_dynamics_control.md) makes the remaining sensing/actuation problem explicit. Do not equate their endpoints or pool their cohorts.
 
 ### 13. What ideas are steal-worthy?
 
