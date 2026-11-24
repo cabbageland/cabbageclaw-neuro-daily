@@ -6,6 +6,10 @@ The good neuromodulation papers are converging on a stricter standard than the f
 
 For multisite designs, add an explicit **input-composition gate**: predict the simultaneous response from separately measured inputs before attributing wider recruitment to nonlinear synergy. This gate is upstream of useful state control and clinical benefit; passing it does not replace either.
 
+Add an **end-to-end observation gate** as well: a sequential action rule does not establish causal sensing if preprocessing uses future samples or calibration depends on a retrospectively known event. In the [ECG-derived SKNA replay framework](../paper_notes/ecg_skna_event_detection_replay.md) (November 24, 2026 preserve), past-only trigger windows operate on an offline forward-backward-filtered envelope. The authors explicitly distinguish this from prospective real-time detection. Audit raw acquisition, filtering, calibration, trigger latency, and actuator artifacts together.
+
+Also keep **event detection**, **state identification**, and **feedback benefit** separate. An imposed respiratory-event label is not ground truth for sympathetic discharge; triggers outside the event cannot automatically be called false positives. Before a detector guides treatment, validate its physiological meaning and false-alarm burden, then compare resource-matched closed-loop and fixed/yoked stimulation on an independent clinical or behavioral objective.
+
 If a paper claims precision stimulation, it should specify:
 
 1. **Target** — what circuit, tract, node, or state variable is being targeted?
